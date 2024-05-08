@@ -1,0 +1,1 @@
+//this file has all the pokemon from the draft
