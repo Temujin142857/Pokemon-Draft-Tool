@@ -1,6 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getDatabase, ref, set, onValue } from "firebase/database";
+import { createPokemonFromSnapshot } from "../DataStructures/Pokemon.js"
+import { createSpeciesFromSnapshot } from "../DataStructures/Species.js";
+import { createMoveFromSnapshot } from "../DataStructures/Move.js"
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -16,3 +22,39 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+
+// Initialize Realtime Database and get a reference to the service
+const database = getDatabase(app);
+
+
+function writeUserData(userId, name, email, imageUrl) {
+    set(ref(database, 'users/' + userId), {
+        username: name,
+        email: email,
+        profile_picture: imageUrl
+    }).then(r => {}) ;
+}
+
+function readData(path){
+    const dataRef = ref(database, path);
+    onValue(dataRef, (snapshot) => {
+        const data = snapshot.val();
+        return data;
+    });
+}
+
+export function loadAPokemon(pokemonId, user="default"){
+    const data=readData(user+"/Pokemon/"+pokemonId);
+    return createPokemonFromSnapshot(data);
+}
+
+export function loadASpecies(speciesName){
+    const data=readData("species/"+speciesName);
+    return createSpeciesFromSnapshot(data);
+}
+
+export function loadAMove(moveName){
+    const data=readData("moves/"+moveName);
+    return createMoveFromSnapshot(data);
+}
