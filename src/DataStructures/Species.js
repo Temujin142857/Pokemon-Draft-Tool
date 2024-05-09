@@ -1,6 +1,7 @@
 export class Species {
-    constructor(name, baseStats, learnSet, types, sprite, abilities) {
+    constructor(name,number, baseStats, learnSet, types, sprite, abilities) {
         this.name = name;
+        this.number = number;
         this.baseStats = baseStats;
         this.learnSet = learnSet;
         this.types = types;
