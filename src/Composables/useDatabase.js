@@ -26,11 +26,11 @@ const app = initializeApp(firebaseConfig);
 
 
 // Initialize Realtime Database and get a reference to the service
-const database = getDatabase(app);
+const useDatabase = getDatabase(app);
 
 
 function writeUserData(userId, name, email, imageUrl) {
-    set(ref(database, 'users/' + userId), {
+    set(ref(useDatabase, 'users/' + userId), {
         username: name,
         email: email,
         profile_picture: imageUrl
@@ -39,7 +39,7 @@ function writeUserData(userId, name, email, imageUrl) {
 
 
 function readData(path){
-    const dataRef = ref(database, path);
+    const dataRef = ref(useDatabase, path);
     onValue(dataRef, (snapshot) => {
         const data = snapshot.val();
         return data;
