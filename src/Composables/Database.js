@@ -4,6 +4,7 @@ import { getDatabase, ref, set, onValue } from "firebase/database";
 import { createPokemonFromSnapshot } from "../DataStructures/Pokemon.js"
 import { createSpeciesFromSnapshot } from "../DataStructures/Species.js";
 import { createMoveFromSnapshot } from "../DataStructures/Move.js"
+import { createTeamsFromSnapshot } from "../DataStructures/Team.js"
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -36,6 +37,7 @@ function writeUserData(userId, name, email, imageUrl) {
     }).then(r => {}) ;
 }
 
+
 function readData(path){
     const dataRef = ref(database, path);
     onValue(dataRef, (snapshot) => {
@@ -57,4 +59,9 @@ export function loadASpecies(speciesName){
 export function loadAMove(moveName){
     const data=readData("moves/"+moveName);
     return createMoveFromSnapshot(data);
+}
+
+export function loadTeams(){
+    const data=readData("teams");
+    return createTeamsFromSnapshot(data);
 }
