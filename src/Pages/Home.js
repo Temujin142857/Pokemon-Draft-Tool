@@ -1,8 +1,9 @@
 import React from "react";
-import { loadTeams } from "./composables/useDatabase.js"
-import { teams } from "./composables/useTeams.js"
+import { loadTeams } from "../composables/useDatabase.js"
+import { teams } from "../composables/useTeams.js"
+import "../CSS/Home.css"
 
-class App extends React.Component {
+class Home extends React.Component {
 
     slots=12;
     teamsSelected=[];
@@ -27,27 +28,29 @@ class App extends React.Component {
     render() {
        return(
         <template>
+            <div style={{backgroundColor: '#302B2B'}}>
+                <h1>
+                    Welcome to DraftDex
+                </h1>
 
-            <h1>
-                Welcome to DraftDex
-            </h1>
+                <h3>
+                    Select two rosters to begin comparing or <br></br>
+                    Create a new roster to add to the draft
+                </h3>
 
-            <h3>
-                Select two rosters to begin comparing or <br></br>
-                Create a new roster to add to the draft
-            </h3>
-
-            <ul>
-                {teams && teams.map((team, index) =>
-                    <li onClick={() => {this.selectTeam(team);}} key={index}>{team.name}</li>
-                )}
-                {Array.from(Array(this.emptySlots), () =>
-                   <li onClick={this.addNewTeam}>
-                        Add New Team
-                   </li>
-                )}
-
-            </ul>
+                <ul style={{columns: '2'}}>
+                    {teams && teams.map((team, index) =>
+                        <li onClick={() => {this.selectTeam(team);}} key={index}>
+                            {team.name}
+                        </li>
+                    )}
+                    {Array.from(Array(this.emptySlots), () =>
+                       <li onClick={this.addNewTeam}>
+                            + New Roster
+                       </li>
+                    )}
+                </ul>
+            </div>
         </template>
        );
     }

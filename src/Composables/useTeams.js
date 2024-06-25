@@ -1,1 +1,1 @@
-let teams=null;
+export let teams=null;
