@@ -1,6 +1,6 @@
 import React from "react";
-import { loadTeams } from "../composables/useDatabase.js"
-import { teams } from "../composables/useTeams.js"
+import { loadTeams } from "../Composables/useDatabase.js"
+import { teams } from "../Composables/useTeams.js"
 import "../CSS/Home.css"
 
 class Home extends React.Component {
@@ -55,3 +55,6 @@ class Home extends React.Component {
        );
     }
 }
+
+
+export default Home;
