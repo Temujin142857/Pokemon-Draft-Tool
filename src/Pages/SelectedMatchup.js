@@ -6,8 +6,8 @@ import { useParams } from 'react-router-dom';
 class SelectedMatchup extends React.Component {
 
 
-    addNewTeam = () => {
-        // Your logic to add a new team goes here
+    selectMoves = (move, pokemon) => {
+        // move to SelectMove, passing the pokemon to modify and move to highlight
     }
 
     render() {

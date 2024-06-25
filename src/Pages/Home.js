@@ -4,10 +4,13 @@ import { teams } from "./composables/useTeams.js"
 
 class App extends React.Component {
 
+    slots=12;
     teamsSelected=[];
+    emptySlots=0;
 
     componentDidMount() {
         loadTeams();
+        this.emptySlots=this.slots-teams.length;
     }
 
     addNewTeam = () => {
@@ -24,13 +27,26 @@ class App extends React.Component {
     render() {
        return(
         <template>
+
+            <h1>
+                Welcome to DraftDex
+            </h1>
+
+            <h3>
+                Select two rosters to begin comparing or <br></br>
+                Create a new roster to add to the draft
+            </h3>
+
             <ul>
                 {teams && teams.map((team, index) =>
                     <li onClick={() => {this.selectTeam(team);}} key={index}>{team.name}</li>
                 )}
-                <button onClick={this.addNewTeam}>
-                    Add New Team
-                </button>
+                {Array.from(Array(this.emptySlots), () =>
+                   <li onClick={this.addNewTeam}>
+                        Add New Team
+                   </li>
+                )}
+
             </ul>
         </template>
        );
