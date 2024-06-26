@@ -26,3 +26,5 @@ class SelectedMatchup extends React.Component {
         );
     }
 }
+
+export default SelectedMatchup;

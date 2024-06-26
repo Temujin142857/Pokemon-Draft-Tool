@@ -56,6 +56,10 @@ export function loadASpecies(speciesName){
     return createSpeciesFromSnapshot(data);
 }
 
+export function loadAllSpecies(){
+    const data=readData("species/");
+}
+
 export function loadAMove(moveName){
     const data=readData("moves/"+moveName);
     return createMoveFromSnapshot(data);
