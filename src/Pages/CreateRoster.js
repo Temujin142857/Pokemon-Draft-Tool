@@ -9,9 +9,10 @@ class CreateRoster extends React.Component {
         super(props);
         this.state = {
             slots: 12,
-            teamsSelected: [],
+            speciesSelected: [],
             emptySlots: 0,
-            species: []
+            species: [],
+            slotsSelected: [],
         }
     }
 
@@ -27,27 +28,31 @@ class CreateRoster extends React.Component {
     }
 
     render() {
-        const { emptySlots, teamsSelected, species } = this.state;
+        const { emptySlots, speciesSelected, species, slotSelected } = this.state;
         return (
-            <div style={{backgroundColor: '#302B2B', textAlign: 'center', display: 'flex'}}>
-                <ul>
+            <div style={{backgroundColor: '#302B2B', textAlign: 'center'}}>
+                <div style={{textAlign: 'center', display: 'flex'}}>
+                    <ul>
 
-                </ul>
-                <ul style={{columns: '2', marginTop: '5%', overflow: 'hidden'}}>
-                    {species && species.map((specie, index) =>
-                        <li className={teamsSelected.includes(specie) ? 'highlighted' : ''}
-                            onClick={() => {
-                                this.selectSlot();
-                            }} key={index}>
-                            {team.name}
-                        </li>
-                    )}
-                    {Array.from(Array(emptySlots)).map((_, index) => (
-                        <li onClick={this.addNewTeam} key={index}>
-                            <Link to="/blogs">+ New Roster</Link>
-                        </li>
-                    ))}
-                </ul>
+                    </ul>
+                    <ul style={{columns: '2', marginTop: '5%', overflow: 'hidden'}}>
+                        {speciesSelected && speciesSelected.map((specie, index) =>
+                            <li className={slotSelected.includes(specie) ? 'highlighted' : ''}
+                                onClick={() => {
+                                    this.selectSlot();
+                                }} key={index} style={{display: 'flex'}}>
+                                {specie.name}
+                                {specie.image}
+                            </li>
+                        )}
+                        {Array.from(Array(emptySlots)).map((_, index) => (
+                            <li onClick={this.addNewTeam} key={index}>
+
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <Link to="/blogs">+ New Roster</Link>
             </div>
         );
     }
