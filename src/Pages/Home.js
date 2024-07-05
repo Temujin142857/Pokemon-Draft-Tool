@@ -1,6 +1,6 @@
 import React from "react";
 import { loadTeams } from "../Composables/useDatabase.js"
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { teams } from "../Composables/useTeams.js"
 import "../CSS/Home.css"
 
@@ -27,6 +27,8 @@ class Home extends React.Component {
             const newTeamsSelected = [...prevState.teamsSelected, team];
             if (newTeamsSelected.length === 2) {
                 console.log("Navigating to selected matchup with teams: ", newTeamsSelected);
+                const navigate = useNavigate();
+                navigate(`/selectedMatchup`, {state: newTeamsSelected,});
                 // Navigate to selected matchup page with teamsSelected
             }
             return { teamsSelected: newTeamsSelected };

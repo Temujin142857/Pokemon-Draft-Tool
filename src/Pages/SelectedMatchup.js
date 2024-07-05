@@ -1,9 +1,18 @@
 import React from "react";
-
-import { useParams } from 'react-router-dom';
+import Card from '../Components/Card';
+import {useLocation} from 'react-router-dom';
 
 
 class SelectedMatchup extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            userRoster: props.location.state.teams ? props.location.state.teams[0] : [],
+            enemyRoster: props.location.state.teams ? props.location.state.teams[1] : []
+        };
+    }
+
 
 
     selectMoves = (move, pokemon) => {
@@ -11,17 +20,42 @@ class SelectedMatchup extends React.Component {
     }
 
     render() {
-        const { teams } = this.props.match.params;
-        const userTeam=teams[0];
-        const enemyTeam=teams[1];
+        const { userRoster, enemyRoster } = this.state;
 
         return(
             <div>
-                <ul>
-                    {userTeam && userTeam.map((species, index) =>
-                        <li key={index}>{species.name}</li>
-                    )}
-                </ul>
+                <div style={{textAlign: 'center', display: 'flex'}}>
+                    <ul>
+                        {userRoster && userRoster.species.map((species, index) =>
+                            <li key={index}>{species.name}</li>
+                        )}
+                    </ul>
+
+                    <div className={'container'}>
+                        <div className={'vertical-line'}></div>
+                    </div>
+
+                    <div>
+                        <Card>
+
+                        </Card>
+
+                        <Card>
+
+                        </Card>
+                    </div>
+                    
+                    <div className={'container'}>
+                        <div className={'vertical-line'}></div>
+                    </div>
+
+                    <ul>
+                        {enemyRoster && enemyRoster.species.map((species, index) =>
+                            <li key={index}>{species.name}</li>
+                        )}
+                    </ul>
+                </div>
+
             </div>
         );
     }

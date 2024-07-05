@@ -1,5 +1,5 @@
 export class Species {
-    constructor(name,number, baseStats, learnSet, types, sprite, abilities) {
+    constructor(name,sprite, baseStats, learnSet, types, number, abilities) {
         this.name = name;
         this.number = number;
         this.baseStats = baseStats;
