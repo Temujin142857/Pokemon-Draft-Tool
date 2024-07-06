@@ -1,0 +1,32 @@
+.i:hover{
+    color: white;
+}
+
+.i{
+    cursor: pointer;
+}
+
+.li{
+    margin-bottom: 100px;
+    margin-top: 10px;
+    color: lightgray;
+    list-style-type: none;
+}
+
+.link{
+    color: lightgray;
+    text-decoration: none;
+}
+
+.link:hover{
+    text-decoration: underline;
+    color: white;
+}
+
+.highlighted {
+    outline: 2px solid yellow; /* Or any other desired style */
+}
+
+.text{
+    color: lightgray;
+}

@@ -1,4 +1,4 @@
-li{
+.lii{
     margin-bottom: 100px;
     margin-top: 10px;
     color: lightgray;
@@ -6,7 +6,7 @@ li{
     cursor: pointer;
 }
 
-li:hover{
+.lii:hover{
     color: white;
 }
 
