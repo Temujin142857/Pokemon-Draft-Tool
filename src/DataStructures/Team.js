@@ -11,6 +11,12 @@ export class Team{
     removePokemon = (pokemon) => {
         this.pokemons = this.pokemons.filter(pokemon => pokemon.species.name !== pokemon.species.name);
     }
+    toJSON() {
+        return {
+            name: this.name,
+            pokemons: this.pokemons.map(pokemon => pokemon.toJSON())
+        };
+    }
 }
 
 

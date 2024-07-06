@@ -110,6 +110,18 @@ export class Pokemon{
         }
     }
 
+    toJSON() {
+        return {
+            specie: this.specie,
+            nature: this.nature,
+            moves: this.moves,
+            evs: this.evs,
+            ivs: this.ivs,
+            ability: this.ability,
+            item: this.item,
+            level: this.level
+        };
+    }
 }
 
 export function createPokemonFromSnapshot(snapshot){
@@ -117,3 +129,4 @@ export function createPokemonFromSnapshot(snapshot){
     //if not load it into memory
     return null;
 }
+
