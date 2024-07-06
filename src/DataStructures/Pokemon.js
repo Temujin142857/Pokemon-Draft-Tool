@@ -1,6 +1,6 @@
 export class Pokemon{
-    constructor(species=null, moves=[], evs=[], ivs=[], ability=null, item=null){
-        this.species = species
+    constructor(specie=null, moves=[], evs=[], ivs=[], ability=null, item=null){
+        this.specie = specie
         this.moves = moves
         this.evs = evs
         this.ivs = ivs

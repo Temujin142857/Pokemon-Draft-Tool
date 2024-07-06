@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import { createPokemonFromSnapshot } from "../DataStructures/Pokemon.js"
-import { createSpeciesFromSnapshot } from "../DataStructures/Species.js";
+import { createSpeciesFromSnapshot } from "../DataStructures/Specie.js";
 import { createMoveFromSnapshot } from "../DataStructures/Move.js"
 import { createTeamsFromSnapshot } from "../DataStructures/Team.js"
 

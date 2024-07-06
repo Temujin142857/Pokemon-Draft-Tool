@@ -1,5 +1,5 @@
 .card {
-    background-color: #ffffff; /* Background color */
+    background-color: lightgray; /* Background color */
     border-radius: 15px; /* Rounded corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for a card effect */
     padding: 20px; /* Padding inside the card */

@@ -1,4 +1,4 @@
-export class Species {
+export class Specie {
     constructor(name,sprite, baseStats, learnSet, types, number, abilities) {
         this.name = name;
         this.number = number;

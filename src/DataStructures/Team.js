@@ -1,16 +1,19 @@
-class Team{
-    constructor(name, species=[], pokemon=[]){
+export class Team{
+    constructor(name, pokemons=[]){
         this.name = name;
-        this.species = species;
-        this.pokemon = pokemon;
+        this.pokemons = pokemons;
     }
 
+    addPokemon = (pokemon) => {
+        this.pokemons.push(pokemon);
+    }
+
+    removePokemon = (pokemon) => {
+        this.pokemons = this.pokemons.filter(pokemon => pokemon.species.name !== pokemon.species.name);
+    }
 }
+
 
 export function createTeamsFromSnapshot(snapshot){
-
-}
-
-export function createTeamFromSnapshot(snapshot){
 
 }

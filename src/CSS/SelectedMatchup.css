@@ -2,9 +2,21 @@
     display: flex;
     align-items: center;
     height: 100vh;
+    margin-left: 10px;
 }
 .vertical-line {
-    width: 1px; /* Line width */
-    height: 100px; /* Line height */
+    width: 3px; /* Line width */
+    height: 95vh; /* Line height */
     background-color: black; /* Line color */
+}
+
+.liii{
+    margin-bottom: 10px;
+    margin-top: 10px;
+    color: lightgray;
+    list-style-type: none;
+}
+
+.text{
+    color: lightgray;
 }

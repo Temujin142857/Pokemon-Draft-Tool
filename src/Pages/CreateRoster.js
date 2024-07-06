@@ -2,7 +2,7 @@ import React from "react";
 import { loadTeams } from "../Composables/useDatabase.js"
 import {Link} from 'react-router-dom'
 import "../CSS/CreateRoster.css"
-import {Species} from "../DataStructures/Species";
+import {Specie} from "../DataStructures/Specie";
 
 class CreateRoster extends React.Component {
 
@@ -13,26 +13,26 @@ class CreateRoster extends React.Component {
             speciesSelected: [],
             emptySlots: 0,
             species: [
-                new Species("Bulbasaur"),
-                new Species("Charmander"),
-                new Species("Squirtle"),
-                new Species("Pikachu"),
-                new Species("Jigglypuff"),
-                new Species("Snorlax"),
-                new Species("Eevee"),
-                new Species("Mewtwo"),
-                new Species("Gengar"),
-                new Species("Dragonite"),
-                new Species("Lucario"),
-                new Species("Greninja"),
-                new Species("Scizor"),
-                new Species("Alakazam"),
-                new Species("Machamp"),
-                new Species("Gyarados"),
-                new Species("Lapras"),
-                new Species("Blaziken"),
-                new Species("Charizard"),
-                new Species("Garchomp")
+                new Specie("Bulbasaur"),
+                new Specie("Charmander"),
+                new Specie("Squirtle"),
+                new Specie("Pikachu"),
+                new Specie("Jigglypuff"),
+                new Specie("Snorlax"),
+                new Specie("Eevee"),
+                new Specie("Mewtwo"),
+                new Specie("Gengar"),
+                new Specie("Dragonite"),
+                new Specie("Lucario"),
+                new Specie("Greninja"),
+                new Specie("Scizor"),
+                new Specie("Alakazam"),
+                new Specie("Machamp"),
+                new Specie("Gyarados"),
+                new Specie("Lapras"),
+                new Specie("Blaziken"),
+                new Specie("Charizard"),
+                new Specie("Garchomp")
             ],
             slotsSelected: [],
 
@@ -65,8 +65,8 @@ class CreateRoster extends React.Component {
         return (
             <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingTop: '20px', paddingBottom: '20px'}}>
                 <div style={{textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'flex-start'}}>
-                    <div style={{border: '2px solid white', borderRadius: '10px', backgroundColor: '#302B2B', textAlign: 'center', maxHeight: '90vh'}}>
-                        <h2 className={'text'}>Choose Pokemon for the Roster</h2>
+                    <div style={{padding: '3px', border: '2px solid white', borderRadius: '10px', backgroundColor: '#302B2B', textAlign: 'center', maxHeight: '90vh', minWidth: '25vw'}}>
+                        <h2 className={'text'}>Choose Pokemon</h2>
                         <input
                             type="text"
                             value={searchInput}
@@ -84,8 +84,8 @@ class CreateRoster extends React.Component {
                             ))}
                         </ul>
                     </div>
-                    <div style={{marginLeft: "40px"}}>
-                        <h2 className={'text'}>Pokemon in the Roster</h2>
+                    <div style={{marginLeft: "80px", minWidth: '25vw'}}>
+                        <h2  contentEditable={"true"} className={'text'}>Roster Name</h2>
                         <ul style={{margin: '50px 0', display: 'grid', gridTemplateColumns: 'auto auto', gap: '20px'}}>
                             {speciesSelected && speciesSelected.map((specie, index) => (
                                 <li key={index} className={'li'} style={{margin: '20px 0'}}>
