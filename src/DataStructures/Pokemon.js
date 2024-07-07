@@ -111,10 +111,10 @@ export class Pokemon{
         console.log(index)
         switch (index) {
             case 0:
-                this.stats[index]=((2*this.specie.baseStats[index]+this.ivs[index]+(this.evs[index]/4))*this.level/100)+(this.level/100)+10;
+                this.stats[index]=((2*this.specie.baseStats[index]+this.ivs[index]+(Math.floor(this.evs[index]/4)))*this.level/100)+(this.level/100)+10;
                 break;
             default:
-                this.stats[index]=(((2*this.specie.baseStats[index]+this.ivs[index]+(this.evs[index]/4))*this.level/100)+5)*this.natureNums[index-1];
+                this.stats[index]=(((2*this.specie.baseStats[index]+this.ivs[index]+(Math.floor(this.evs[index]/4)))*this.level/100)+5)*this.natureNums[index-1];
         }
     }
 

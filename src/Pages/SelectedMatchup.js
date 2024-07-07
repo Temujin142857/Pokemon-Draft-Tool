@@ -39,14 +39,14 @@ const SelectedMatchup = () => {
         console.log('hello', event)
         const newIVs = [...selectedUserPokemon.ivs];
         newIVs[index] = parseInt(event.target.value, 10);
-        selectedUserPokemon.setIv(index, newIVs[index]);
+        selectedUserPokemon.setIv(newIVs[index], index);
         setSelectedUserPokemon(prevState => ({ ...prevState, ivs: newIVs }));
     };
 
     const handleEVChange = (index, ev, event) => {
         const newEVs = [...selectedUserPokemon.evs];
         newEVs[index] = parseInt(event.target.value, 10);
-        selectedUserPokemon.setEv(index, newEVs[index]);
+        selectedUserPokemon.setEv(newEVs[index], index);
         setSelectedUserPokemon(prevState => ({ ...prevState, evs: newEVs }));
     };
 
@@ -148,7 +148,7 @@ const SelectedMatchup = () => {
                             <h2>Stats</h2>
                             <ul style={{listStyleType: 'none', padding: 0}}>
                                 {selectedUserPokemon && selectedUserPokemon.stats?.map((stat, index) =>
-                                    <li key={index}>{stat}</li>
+                                    <li key={index} style={{marginLeft: '10px', marginBottom: '13px'}}>{stat}</li>
                                 )}
                             </ul>
                         </div>
