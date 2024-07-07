@@ -11,8 +11,9 @@ export class Roster{
             for (let i = 0; i < 6&&i<species.length; i++) {
                 pokemons.push(new Pokemon(species[i]));
             }
-            this.teams=[new Team('', pokemons)];
+            this.teams=[new Team('team1', pokemons)];
         }
+        console.log(this.teams)
     }
 
 
@@ -26,6 +27,7 @@ export class Roster{
 
     static fromJSON(json) {
         const teams = json.teams.map(teamJson => Team.fromJSON(teamJson));
+        console.log(teams);
         return new Roster(json.name, json.species, teams);
     }
 }

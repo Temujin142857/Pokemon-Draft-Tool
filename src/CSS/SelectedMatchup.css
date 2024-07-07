@@ -16,6 +16,26 @@
     list-style-type: none;
 }
 
+.square-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px; /* Adjust as needed */
+    width: 300px; /* Adjust width as needed */
+    height: 300px; /* Adjust height as needed */
+    margin-top: 50px;
+    margin-left: 30px;
+}
+
+.square-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ccc; /* Optional background color */
+    border: 1px solid #999; /* Optional border */
+}
+
+
 .text{
     color: lightgray;
 }

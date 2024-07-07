@@ -1,5 +1,5 @@
 export class Pokemon{
-    constructor(specie=null, nature='Serious', moves=[], evs=[0,0,0,0,0,0], ivs=[0,0,0,0,0,0], ability=null, item=null, level=100){
+    constructor(specie=null, nature='Serious', moves=[], evs=[0,0,0,0,0,0], ivs=[31,31,31,31,31,31], ability=null, item=null, level=100){
         this.specie = specie
         this.nature = nature
         this.moves = moves
@@ -13,8 +13,16 @@ export class Pokemon{
         if(specie){
             for (let i = 0; i < 6; i++) {
                 this.recalculateStat(i);
-                console.log(this.stats[i])
             }
+            if(moves.length===0 && specie.learnSet){
+                for (let i = 0; i < 4 && i < specie.learnSet.length; i++) {
+                    this.moves.push(specie.learnSet[i]);
+                }
+            }
+            if(!ability&&specie.abilities.length>0){
+                this.ability=specie.abilities[0];
+            }
+
         }
     }
 
@@ -35,86 +43,91 @@ export class Pokemon{
     }
 
     updateNatureNums(){
-        switch (this.nature) {
-            case 'Hardy':
-            case 'Docile':
-            case 'Serious':
-            case 'Bashful':
-            case 'Quirky':
+        const nature=this.nature ? this.nature.toLowerCase() : '';
+        switch (nature) {
+            case 'hardy':
+            case 'docile':
+            case 'serious':
+            case 'bashful':
+            case 'quirky':
                 this.natureNums = [1, 1, 1, 1, 1, 1];
                 break;
-            case 'Lonely':
+            case 'lonely':
                 this.natureNums = [1, 1.1, 0.9, 1, 1, 1]; // Attack increased, Defense decreased
                 break;
-            case 'Adamant':
+            case 'adamant':
                 this.natureNums = [1, 1.1, 1, 1, 0.9, 1]; // Attack increased, Sp. Attack decreased
                 break;
-            case 'Naughty':
+            case 'naughty':
                 this.natureNums = [1, 1.1, 1, 1, 1, 0.9]; // Attack increased, Sp. Defense decreased
                 break;
-            case 'Brave':
+            case 'brave':
                 this.natureNums = [1, 1.1, 1, 1, 1, 0.9]; // Attack increased, Speed decreased
                 break;
-            case 'Bold':
+            case 'bold':
                 this.natureNums = [1, 0.9, 1.1, 1, 1, 1]; // Defense increased, Attack decreased
                 break;
-            case 'Impish':
+            case 'impish':
                 this.natureNums = [1, 1, 1.1, 1, 0.9, 1]; // Defense increased, Sp. Attack decreased
                 break;
-            case 'Lax':
+            case 'lax':
                 this.natureNums = [1, 1, 1.1, 1, 1, 0.9]; // Defense increased, Sp. Defense decreased
                 break;
-            case 'Relaxed':
+            case 'relaxed':
                 this.natureNums = [1, 1, 1.1, 1, 1, 0.9]; // Defense increased, Speed decreased
                 break;
-            case 'Modest':
+            case 'modest':
                 this.natureNums = [1, 0.9, 1, 1.1, 1, 1]; // Sp. Attack increased, Attack decreased
                 break;
-            case 'Mild':
+            case 'mild':
                 this.natureNums = [1, 1, 0.9, 1.1, 1, 1]; // Sp. Attack increased, Defense decreased
                 break;
-            case 'Rash':
+            case 'rash':
                 this.natureNums = [1, 1, 1, 1.1, 1, 0.9]; // Sp. Attack increased, Sp. Defense decreased
                 break;
-            case 'Quiet':
+            case 'quiet':
                 this.natureNums = [1, 1, 1, 1.1, 1, 0.9]; // Sp. Attack increased, Speed decreased
                 break;
-            case 'Calm':
+            case 'calm':
                 this.natureNums = [1, 0.9, 1, 1, 1.1, 1]; // Sp. Defense increased, Attack decreased
                 break;
-            case 'Gentle':
+            case 'gentle':
                 this.natureNums = [1, 1, 0.9, 1, 1.1, 1]; // Sp. Defense increased, Defense decreased
                 break;
-            case 'Careful':
+            case 'careful':
                 this.natureNums = [1, 1, 1, 0.9, 1.1, 1]; // Sp. Defense increased, Sp. Attack decreased
                 break;
-            case 'Sassy':
+            case 'sassy':
                 this.natureNums = [1, 1, 1, 1, 1.1, 0.9]; // Sp. Defense increased, Speed decreased
                 break;
-            case 'Timid':
+            case 'timid':
                 this.natureNums = [1, 0.9, 1, 1, 1, 1.1]; // Speed increased, Attack decreased
                 break;
-            case 'Hasty':
+            case 'hasty':
                 this.natureNums = [1, 1, 0.9, 1, 1, 1.1]; // Speed increased, Defense decreased
                 break;
-            case 'Jolly':
+            case 'jolly':
                 this.natureNums = [1, 1, 1, 0.9, 1, 1.1]; // Speed increased, Sp. Attack decreased
                 break;
-            case 'Naive':
+            case 'naive':
                 this.natureNums = [1, 1, 1, 1, 0.9, 1.1]; // Speed increased, Sp. Defense decreased
                 break;
         }
+        console.log('before', this.stats)
+        for (let i = 0; i < 6; i++) {
+            this.recalculateStat(i);
+        }
+        console.log('after', this.stats)
     }
 
     recalculateStat(index){
-        console.log(this.specie.baseStats)
-        console.log(index)
+       
         switch (index) {
             case 0:
-                this.stats[index]=((2*this.specie.baseStats[index]+this.ivs[index]+(Math.floor(this.evs[index]/4)))*this.level/100)+(this.level/100)+10;
+                this.stats[index]=Math.floor(((2*this.specie.baseStats[index]+this.ivs[index]+(Math.floor(this.evs[index]/4)))*this.level/100)+(this.level/100)+10);
                 break;
             default:
-                this.stats[index]=(((2*this.specie.baseStats[index]+this.ivs[index]+(Math.floor(this.evs[index]/4)))*this.level/100)+5)*this.natureNums[index-1];
+                this.stats[index]=Math.floor((((2*this.specie.baseStats[index]+this.ivs[index]+(Math.floor(this.evs[index]/4)))*this.level/100)+5)*this.natureNums[index]);
         }
     }
 

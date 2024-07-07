@@ -1,7 +1,7 @@
 import {Pokemon} from "./Pokemon";
 
 export class Team{
-    constructor(name, pokemons=[]){
+    constructor(name='team1', pokemons=[]){
         this.name = name;
         this.pokemons = pokemons;
     }
