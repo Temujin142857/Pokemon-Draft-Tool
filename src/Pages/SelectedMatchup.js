@@ -4,24 +4,24 @@ import {useLocation} from 'react-router-dom';
 import "../CSS/SelectedMatchup.css"
 import {Team} from "../DataStructures/Team.js";
 import {Pokemon} from "../DataStructures/Pokemon";
+import {Roster} from "../DataStructures/Roster";
 
 
 const SelectedMatchup = () => {
     const location = useLocation();
     const { state } = location;
 
-    const userRoster = state && state.rostersSelected.length > 0 ? state.rostersSelected[0] : [];
-    const enemyRoster = state && state.rostersSelected.length > 1 ? state.rostersSelected[1] : [];
+    console.log('hi',state);
 
-    const userTeam=new Team('team1');
-    const enemyTeam=new Team('team1');
 
-    console.log('hi',state.rostersSelected);
+    const userRoster = state && state.param.length > 0 ? Roster.fromJSON(state.param[0]) : [];
+    const enemyRoster = state && state.param.length > 1 ? Roster.fromJSON(state.param[1]) : [];
 
-    console.log('hi',userRoster);
+    console.log(userRoster, 'ooo')
 
-    let selectedUserPokemon= userRoster.team.pokemons[0];
-    let selectedEnemyPokemon= enemyRoster.team.pokemons[0];
+
+    let selectedUserPokemon= userRoster.teams[0].pokemons[0];
+    let selectedEnemyPokemon= enemyRoster.teams[0].pokemons[0];
 
 
     const selectMoves = (move, pokemon) => {
@@ -40,20 +40,20 @@ const SelectedMatchup = () => {
     const selectSpecie = (user, specie) => {
         const pokemonToAdd = new Pokemon(specie);
         if (user) {
-            const alreadyExists = userTeam.pokemons.some(pokemon => pokemon.specie.name === pokemonToAdd.specie.name);
+            const alreadyExists = userRoster.teams[0].pokemons.some(pokemon => pokemon.specie.name === pokemonToAdd.specie.name);
             if (!alreadyExists) {
-                userTeam.addPokemon(pokemonToAdd);
+                userRoster.teams[0].addPokemon(pokemonToAdd);
             } else {
                 // Remove the existing Pokemon from the team
-                userTeam.removePokemon(pokemonToAdd.specie.name);
+                userRoster.teams[0].removePokemon(pokemonToAdd.specie.name);
             }
         } else {
-            const alreadyExists = enemyTeam.pokemons.some(pokemon => pokemon.specie.name === pokemonToAdd.specie.name);
+            const alreadyExists = enemyRoster.teams[0].pokemons.some(pokemon => pokemon.specie.name === pokemonToAdd.specie.name);
             if (!alreadyExists) {
-                enemyTeam.addPokemon(pokemonToAdd);
+                enemyRoster.teams[0].addPokemon(pokemonToAdd);
             } else {
                 // Remove the existing Pokemon from the team
-                enemyTeam.removePokemon(pokemonToAdd?.specie.name);
+                enemyRoster.teams[0].removePokemon(pokemonToAdd?.specie.name);
             }
         }
     }
@@ -63,17 +63,13 @@ const SelectedMatchup = () => {
 
     return (
 
-        <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingTop: '10px', paddingBottom: '20px'}}>
+        <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', minWidth: '100vw', paddingTop: '10px', paddingBottom: '20px'}}>
             <div style={{textAlign: 'center', display: 'flex'}}>
                 <div>
+                    <h2 className={'text'}>{userRoster.name}</h2>
                     <ul>
-                        {userRoster && userRoster.species.map((specie, index) =>
-                            <li className={userRoster.team.pokemons.some(pokemon => pokemon.specie.name === specie.name) ? 'lii highlighted' : 'lii'}
-                                onClick={() => {
-                                    selectSpecie(specie);
-                                }} key={index}>
-                                {specie.name}
-                            </li>
+                        {userRoster && userRoster.species?.map((species, index) =>
+                            <li key={index} className={'liii'}>{species.name}</li>
                         )}
                     </ul>
                 </div>
@@ -83,9 +79,16 @@ const SelectedMatchup = () => {
                 </div>
 
                 <div>
-                    <Card style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                        <h2 className={'text'}>stat</h2>
-                        <ul>
+                    <Card style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        width: '100%',
+                        padding: '20px'
+                    }}>
+                    <h2 className='text'>Stat</h2>
+                        <ul style={{ listStyleType: 'none', padding: 0 }}>
                             <li>Hp</li>
                             <li>Atk</li>
                             <li>Def</li>
@@ -93,10 +96,10 @@ const SelectedMatchup = () => {
                             <li>SpD</li>
                             <li>Spe</li>
                         </ul>
-                        <h2 className={'text'}>IVs</h2>
-                        <ul>
-                            {userRoster && selectedUserPokemon.ivs?.map((iv, index) =>
-                                <li key={index} className={'liii'}>
+                        <h2 className='text'>IVs</h2>
+                        <ul style={{ listStyleType: 'none', padding: 0 }}>
+                            {enemyRoster && selectedUserPokemon.ivs?.map((iv, index) =>
+                                <li key={index} className='liii'>
                                     <input
                                         type="number"
                                         value={iv}
@@ -105,10 +108,10 @@ const SelectedMatchup = () => {
                                 </li>
                             )}
                         </ul>
-                        <h2 className={'text'}>EVs</h2>
-                        <ul>
-                            {userRoster && selectedUserPokemon.evs?.map((ev, index) =>
-                                <li key={index} className={'liii'}>
+                        <h2 className='text'>EVs</h2>
+                        <ul style={{ listStyleType: 'none', padding: 0 }}>
+                            {enemyRoster && selectedUserPokemon.evs?.map((ev, index) =>
+                                <li key={index} className='liii'>
                                     <input
                                         type="number"
                                         value={ev}
@@ -117,16 +120,16 @@ const SelectedMatchup = () => {
                                 </li>
                             )}
                         </ul>
-                        <ul>
-                            {userRoster && selectedUserPokemon.stats?.map((stat, index) =>
-                                <li key={index} className={'liii'}>stat</li>
+                        <ul style={{ listStyleType: 'none', padding: 0 }}>
+                            {enemyRoster && selectedUserPokemon.stats?.map((stat, index) =>
+                                <li key={index} className='liii'>stat</li>
                             )}
                         </ul>
                     </Card>
 
-                    <Card style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                        <h2 className={'text'}>stat</h2>
-                        <ul>
+                    <Card style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', width: '100%', padding: '20px' }}>
+                        <h2 className='text'>Stat</h2>
+                        <ul style={{ listStyleType: 'none', padding: 0 }}>
                             <li>Hp</li>
                             <li>Atk</li>
                             <li>Def</li>
@@ -134,10 +137,10 @@ const SelectedMatchup = () => {
                             <li>SpD</li>
                             <li>Spe</li>
                         </ul>
-                        <h2 className={'text'}>IVs</h2>
-                        <ul>
+                        <h2 className='text'>IVs</h2>
+                        <ul style={{ listStyleType: 'none', padding: 0 }}>
                             {enemyRoster && selectedEnemyPokemon.ivs?.map((iv, index) =>
-                                <li key={index} className={'liii'}>
+                                <li key={index} className='liii'>
                                     <input
                                         type="number"
                                         value={iv}
@@ -146,10 +149,10 @@ const SelectedMatchup = () => {
                                 </li>
                             )}
                         </ul>
-                        <h2 className={'text'}>EVs</h2>
-                        <ul>
+                        <h2 className='text'>EVs</h2>
+                        <ul style={{ listStyleType: 'none', padding: 0 }}>
                             {enemyRoster && selectedEnemyPokemon.evs?.map((ev, index) =>
-                                <li key={index} className={'liii'}>
+                                <li key={index} className='liii'>
                                     <input
                                         type="number"
                                         value={ev}
@@ -158,12 +161,13 @@ const SelectedMatchup = () => {
                                 </li>
                             )}
                         </ul>
-                        <ul>
+                        <ul style={{ listStyleType: 'none', padding: 0 }}>
                             {enemyRoster && selectedEnemyPokemon.stats?.map((stat, index) =>
-                                <li key={index} className={'liii'}>stat</li>
+                                <li key={index} className='liii'>stat</li>
                             )}
                         </ul>
                     </Card>
+
                 </div>
 
                 <div className={'container'}>

@@ -1,3 +1,5 @@
+import {Pokemon} from "./Pokemon";
+
 export class Team{
     constructor(name, pokemons=[]){
         this.name = name;
@@ -8,8 +10,8 @@ export class Team{
         this.pokemons.push(pokemon);
     }
 
-    removePokemon = (pokemon) => {
-        this.pokemons = this.pokemons.filter(pokemon => pokemon.species.name !== pokemon.species.name);
+    removePokemon = (pokemon1) => {
+        this.pokemons = this.pokemons.filter(pokemon => pokemon1.species.name !== pokemon.species.name);
     }
     toJSON() {
         return {
@@ -17,9 +19,15 @@ export class Team{
             pokemons: this.pokemons.map(pokemon => pokemon.toJSON())
         };
     }
+
+    static fromJSON(json) {
+        const pokemons = json.pokemons.map(pokemonJson => Pokemon.fromJSON(pokemonJson));
+        return new Team(json.name, pokemons);
+    }
 }
 
 
 export function createTeamsFromSnapshot(snapshot){
 
 }
+

@@ -4,10 +4,18 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for a card effect */
     padding: 20px; /* Padding inside the card */
     margin: 20px; /* Margin outside the card */
-    width: 300px; /* Fixed width */
-    height: 200px; /* Fixed height */
+    width: 100%; /* Allow the card to take full width */
+    min-height: 70vh; /* Ensure minimum height to expand */
     display: flex; /* Flexbox for easy content alignment */
     flex-direction: column; /* Column direction for content */
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
+    justify-content: flex-start; /* Align content to the start vertically */
+    align-items: center;
+}
+
+.text {
+    margin: 10px 0; /* Margin for text headers */
+}
+
+.liii {
+    margin-bottom: 10px; /* Margin for list items */
 }

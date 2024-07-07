@@ -122,6 +122,10 @@ export class Pokemon{
             level: this.level
         };
     }
+
+    static fromJSON(json) {
+        return new Pokemon(json.specie, json.nature, json.moves, json.evs, json.ivs, json.ability, json.item, json.level);
+    }
 }
 
 export function createPokemonFromSnapshot(snapshot){
