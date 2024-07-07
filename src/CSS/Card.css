@@ -4,12 +4,9 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for a card effect */
     padding: 20px; /* Padding inside the card */
     margin: 20px; /* Margin outside the card */
-    width: 100%; /* Allow the card to take full width */
-    min-height: 70vh; /* Ensure minimum height to expand */
+    min-width: 40vw; /* Allow the card to take full width */
+    min-height: 40vh; /* Ensure minimum height to expand */
     display: flex; /* Flexbox for easy content alignment */
-    flex-direction: column; /* Column direction for content */
-    justify-content: flex-start; /* Align content to the start vertically */
-    align-items: center;
 }
 
 .text {

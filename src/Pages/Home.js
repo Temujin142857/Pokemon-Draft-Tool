@@ -12,7 +12,7 @@ const speciesList = [
     new Specie(
         "Bulbasaur",
         "https://pokeapi.co/api/v2/pokemon/1/",
-        { hp: 45, attack: 49, defense: 49, speed: 45 },
+        [45, 49, 49, 65, 65, 45], // [hp, attack, defense, special attack, special defense, speed]
         ["Tackle", "Vine Whip", "Leech Seed", "Razor Leaf"],
         ["Grass", "Poison"],
         1,
@@ -21,7 +21,7 @@ const speciesList = [
     new Specie(
         "Charmander",
         "https://pokeapi.co/api/v2/pokemon/4/",
-        { hp: 39, attack: 52, defense: 43, speed: 65 },
+        [39, 52, 43, 60, 50, 65],
         ["Scratch", "Ember", "Leer", "Flamethrower"],
         ["Fire"],
         4,
@@ -30,7 +30,7 @@ const speciesList = [
     new Specie(
         "Squirtle",
         "https://pokeapi.co/api/v2/pokemon/7/",
-        { hp: 44, attack: 48, defense: 65, speed: 43 },
+        [44, 48, 65, 50, 64, 43],
         ["Tackle", "Bubble", "Water Gun", "Hydro Pump"],
         ["Water"],
         7,
@@ -39,7 +39,7 @@ const speciesList = [
     new Specie(
         "Pikachu",
         "https://pokeapi.co/api/v2/pokemon/25/",
-        { hp: 35, attack: 55, defense: 40, speed: 90 },
+        [35, 55, 40, 50, 50, 90],
         ["Quick Attack", "Thunder Shock", "Thunderbolt", "Volt Tackle"],
         ["Electric"],
         25,
@@ -48,7 +48,7 @@ const speciesList = [
     new Specie(
         "Jigglypuff",
         "https://pokeapi.co/api/v2/pokemon/39/",
-        { hp: 115, attack: 45, defense: 20, speed: 20 },
+        [115, 45, 20, 45, 25, 20],
         ["Sing", "Pound", "Double Slap", "Hyper Voice"],
         ["Normal", "Fairy"],
         39,
@@ -57,7 +57,7 @@ const speciesList = [
     new Specie(
         "Snorlax",
         "https://pokeapi.co/api/v2/pokemon/143/",
-        { hp: 160, attack: 110, defense: 65, speed: 30 },
+        [160, 110, 65, 65, 110, 30],
         ["Rest", "Snore", "Body Slam", "Hyper Beam"],
         ["Normal"],
         143,
@@ -66,7 +66,7 @@ const speciesList = [
     new Specie(
         "Eevee",
         "https://pokeapi.co/api/v2/pokemon/133/",
-        { hp: 55, attack: 55, defense: 50, speed: 55 },
+        [55, 55, 50, 45, 65, 55],
         ["Tackle", "Quick Attack", "Bite", "Swift"],
         ["Normal"],
         133,
@@ -75,7 +75,7 @@ const speciesList = [
     new Specie(
         "Mewtwo",
         "https://pokeapi.co/api/v2/pokemon/150/",
-        { hp: 106, attack: 110, defense: 90, speed: 130 },
+        [106, 110, 90, 154, 90, 130],
         ["Psychic", "Psybeam", "Shadow Ball", "Aura Sphere"],
         ["Psychic"],
         150,
@@ -84,7 +84,7 @@ const speciesList = [
     new Specie(
         "Gengar",
         "https://pokeapi.co/api/v2/pokemon/94/",
-        { hp: 60, attack: 65, defense: 60, speed: 110 },
+        [60, 65, 60, 130, 75, 110],
         ["Lick", "Shadow Punch", "Shadow Ball", "Dream Eater"],
         ["Ghost", "Poison"],
         94,
@@ -93,7 +93,7 @@ const speciesList = [
     new Specie(
         "Dragonite",
         "https://pokeapi.co/api/v2/pokemon/149/",
-        { hp: 91, attack: 134, defense: 95, speed: 80 },
+        [91, 134, 95, 100, 100, 80],
         ["Wing Attack", "Dragon Claw", "Hyper Beam", "Outrage"],
         ["Dragon", "Flying"],
         149,
@@ -102,7 +102,7 @@ const speciesList = [
     new Specie(
         "Lucario",
         "https://pokeapi.co/api/v2/pokemon/448/",
-        { hp: 70, attack: 110, defense: 70, speed: 90 },
+        [70, 110, 70, 115, 70, 90],
         ["Metal Claw", "Aura Sphere", "Close Combat", "Flash Cannon"],
         ["Fighting", "Steel"],
         448,
@@ -111,7 +111,7 @@ const speciesList = [
     new Specie(
         "Greninja",
         "https://pokeapi.co/api/v2/pokemon/658/",
-        { hp: 72, attack: 95, defense: 67, speed: 122 },
+        [72, 95, 67, 103, 71, 122],
         ["Water Shuriken", "Aerial Ace", "Dark Pulse", "Hydro Pump"],
         ["Water", "Dark"],
         658,
@@ -120,7 +120,7 @@ const speciesList = [
     new Specie(
         "Scizor",
         "https://pokeapi.co/api/v2/pokemon/212/",
-        { hp: 70, attack: 130, defense: 100, speed: 65 },
+        [70, 130, 100, 55, 80, 65],
         ["Bullet Punch", "X-Scissor", "Swords Dance", "Iron Head"],
         ["Bug", "Steel"],
         212,
@@ -129,7 +129,7 @@ const speciesList = [
     new Specie(
         "Alakazam",
         "https://pokeapi.co/api/v2/pokemon/65/",
-        { hp: 55, attack: 50, defense: 45, speed: 120 },
+        [55, 50, 45, 135, 85, 120],
         ["Psybeam", "Psychic", "Focus Blast", "Shadow Ball"],
         ["Psychic"],
         65,
@@ -138,7 +138,7 @@ const speciesList = [
     new Specie(
         "Machamp",
         "https://pokeapi.co/api/v2/pokemon/68/",
-        { hp: 90, attack: 130, defense: 80, speed: 55 },
+        [90, 130, 80, 65, 85, 55],
         ["Karate Chop", "Cross Chop", "Earthquake", "Dynamic Punch"],
         ["Fighting"],
         68,
@@ -147,7 +147,7 @@ const speciesList = [
     new Specie(
         "Gyarados",
         "https://pokeapi.co/api/v2/pokemon/130/",
-        { hp: 95, attack: 125, defense: 79, speed: 81 },
+        [95, 125, 79, 60, 100, 81],
         ["Bite", "Dragon Rage", "Hydro Pump", "Hyper Beam"],
         ["Water", "Flying"],
         130,
@@ -156,7 +156,7 @@ const speciesList = [
     new Specie(
         "Lapras",
         "https://pokeapi.co/api/v2/pokemon/131/",
-        { hp: 130, attack: 85, defense: 80, speed: 60 },
+        [130, 85, 80, 85, 95, 60],
         ["Sing", "Ice Beam", "Body Slam", "Hydro Pump"],
         ["Water", "Ice"],
         131,
@@ -165,7 +165,7 @@ const speciesList = [
     new Specie(
         "Blaziken",
         "https://pokeapi.co/api/v2/pokemon/257/",
-        { hp: 80, attack: 120, defense: 70, speed: 80 },
+        [80, 120, 70, 110, 70, 80],
         ["Blaze Kick", "Sky Uppercut", "Flamethrower", "Brave Bird"],
         ["Fire", "Fighting"],
         257,
@@ -174,7 +174,7 @@ const speciesList = [
     new Specie(
         "Charizard",
         "https://pokeapi.co/api/v2/pokemon/6/",
-        { hp: 78, attack: 84, defense: 78, speed: 100 },
+        [78, 84, 78, 109, 85, 100],
         ["Flamethrower", "Fire Blast", "Dragon Claw", "Air Slash"],
         ["Fire", "Flying"],
         6,
@@ -183,13 +183,14 @@ const speciesList = [
     new Specie(
         "Garchomp",
         "https://pokeapi.co/api/v2/pokemon/445/",
-        { hp: 108, attack: 130, defense: 95, speed: 102 },
+        [108, 130, 95, 80, 85, 102],
         ["Dragon Claw", "Earthquake", "Stone Edge", "Fire Fang"],
         ["Dragon", "Ground"],
         445,
         ["Sand Veil", "Rough Skin"]
     ),
 ];
+
 
 class Home extends React.Component {
 

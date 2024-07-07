@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import Card from '../Components/Card';
 import {useLocation} from 'react-router-dom';
 import "../CSS/SelectedMatchup.css"
@@ -11,30 +12,44 @@ const SelectedMatchup = () => {
     const location = useLocation();
     const { state } = location;
 
-    console.log('hi',state);
 
 
-    const userRoster = state && state.param.length > 0 ? Roster.fromJSON(state.param[0]) : [];
-    const enemyRoster = state && state.param.length > 1 ? Roster.fromJSON(state.param[1]) : [];
+    const [userRoster, setUserRoster] = useState([]);
+    const [enemyRoster, setEnemyRoster] = useState([]);
+    const [selectedUserPokemon, setSelectedUserPokemon] = useState(null);
+    const [selectedEnemyPokemon, setSelectedEnemyPokemon] = useState(null);
 
-    console.log(userRoster, 'ooo')
+    useEffect(() => {
+        console.log('hhh')
+        const initialUserRoster = state && state.param.length > 0 ? Roster.fromJSON(state.param[0]) : [];
+        const initialEnemyRoster = state && state.param.length > 1 ? Roster.fromJSON(state.param[1]) : [];
 
+        setUserRoster(initialUserRoster);
+        setEnemyRoster(initialEnemyRoster);
 
-    let selectedUserPokemon= userRoster.teams[0].pokemons[0];
-    let selectedEnemyPokemon= enemyRoster.teams[0].pokemons[0];
-
-
-    const selectMoves = (move, pokemon) => {
-        // move to SelectMove, passing the pokemon to modify and move to highlight
-    }
+        if (initialUserRoster.teams.length > 0 && initialUserRoster.teams[0].pokemons.length > 0) {
+            setSelectedUserPokemon(initialUserRoster.teams[0].pokemons[0]);
+        }
+        if (initialEnemyRoster.teams.length > 0 && initialEnemyRoster.teams[0].pokemons.length > 0) {
+            setSelectedEnemyPokemon(initialEnemyRoster.teams[0].pokemons[0]);
+        }
+    }, [state]);
 
     const handleIVChange = (index, iv, event) => {
-        selectedUserPokemon.setIv(iv);
-    }
+        console.log('hello', event)
+        const newIVs = [...selectedUserPokemon.ivs];
+        newIVs[index] = parseInt(event.target.value, 10);
+        selectedUserPokemon.setIv(index, newIVs[index]);
+        setSelectedUserPokemon(prevState => ({ ...prevState, ivs: newIVs }));
+    };
 
     const handleEVChange = (index, ev, event) => {
-        selectedUserPokemon.setEv(ev);
-    }
+        const newEVs = [...selectedUserPokemon.evs];
+        newEVs[index] = parseInt(event.target.value, 10);
+        selectedUserPokemon.setEv(index, newEVs[index]);
+        setSelectedUserPokemon(prevState => ({ ...prevState, evs: newEVs }));
+    };
+
 
 
     const selectSpecie = (user, specie) => {
@@ -81,91 +96,117 @@ const SelectedMatchup = () => {
                 <div>
                     <Card style={{
                         display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
                         width: '100%',
                         padding: '20px'
                     }}>
-                    <h2 className='text'>Stat</h2>
+                        <div>
+                    <h2>_</h2>
                         <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            <li>Hp</li>
-                            <li>Atk</li>
-                            <li>Def</li>
-                            <li>SpA</li>
-                            <li>SpD</li>
-                            <li>Spe</li>
+                            <li className={'hli'}>Hp</li>
+                            <li className={'hli'}>Atk</li>
+                            <li className={'hli'}>Def</li>
+                            <li className={'hli'}>SpA</li>
+                            <li className={'hli'}>SpD</li>
+                            <li className={'hli'}>Spe</li>
                         </ul>
-                        <h2 className='text'>IVs</h2>
+                        </div>
+                        <div>
+                        <h2>IVs</h2>
                         <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            {enemyRoster && selectedUserPokemon.ivs?.map((iv, index) =>
+                            {selectedUserPokemon && selectedUserPokemon.ivs?.map((iv, index) =>
                                 <li key={index} className='liii'>
                                     <input
+                                        style={{width:'40px', marginLeft: '10px'}}
                                         type="number"
                                         value={iv}
+                                        size='2'
+                                        maxLength='2'
                                         onChange={(event) => handleIVChange(index, iv, event)}
                                     />
                                 </li>
                             )}
                         </ul>
-                        <h2 className='text'>EVs</h2>
+                        </div>
+                        <div>
+                        <h2>EVs</h2>
                         <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            {enemyRoster && selectedUserPokemon.evs?.map((ev, index) =>
+                            {selectedUserPokemon && selectedUserPokemon.evs?.map((ev, index) =>
                                 <li key={index} className='liii'>
                                     <input
+                                        style={{width:'50px', marginLeft: '10px'}}
                                         type="number"
                                         value={ev}
-                                        onChange={(event) => handleEVChange(index, event)}
+                                        size='3'
+                                        maxLength='3'
+                                        onChange={(event) => handleEVChange(index, ev, event)}
                                     />
                                 </li>
                             )}
                         </ul>
-                        <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            {enemyRoster && selectedUserPokemon.stats?.map((stat, index) =>
-                                <li key={index} className='liii'>stat</li>
-                            )}
-                        </ul>
+                        </div>
+                        <div>
+                            <h2>Stats</h2>
+                            <ul style={{listStyleType: 'none', padding: 0}}>
+                                {selectedUserPokemon && selectedUserPokemon.stats?.map((stat, index) =>
+                                    <li key={index}>{stat}</li>
+                                )}
+                            </ul>
+                        </div>
                     </Card>
 
-                    <Card style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', width: '100%', padding: '20px' }}>
-                        <h2 className='text'>Stat</h2>
+                    <Card style={{ display: 'flex', width: '100%', padding: '20px' }}>
+                        <div>
+                            <h2>_</h2>
+                            <ul style={{listStyleType: 'none', padding: 0}}>
+                                <li className={'hli'}>Hp</li>
+                                <li className={'hli'}>Atk</li>
+                                <li className={'hli'}>Def</li>
+                                <li className={'hli'}>SpA</li>
+                                <li className={'hli'}>SpD</li>
+                                <li className={'hli'}>Spe</li>
+                            </ul>
+                        </div>
+                        <div>
+                        <h2>IVs</h2>
                         <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            <li>Hp</li>
-                            <li>Atk</li>
-                            <li>Def</li>
-                            <li>SpA</li>
-                            <li>SpD</li>
-                            <li>Spe</li>
-                        </ul>
-                        <h2 className='text'>IVs</h2>
-                        <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            {enemyRoster && selectedEnemyPokemon.ivs?.map((iv, index) =>
+                            {selectedEnemyPokemon && selectedEnemyPokemon.ivs?.map((iv, index) =>
                                 <li key={index} className='liii'>
                                     <input
+                                        style={{width:'40px', marginLeft: '10px'}}
                                         type="number"
-                                        value={iv}
+                                        placeholder={iv}
+                                        size='2'
+                                        maxLength='2'
                                         onChange={(event) => handleIVChange(index, iv, event)}
                                     />
                                 </li>
                             )}
                         </ul>
-                        <h2 className='text'>EVs</h2>
-                        <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            {enemyRoster && selectedEnemyPokemon.evs?.map((ev, index) =>
-                                <li key={index} className='liii'>
-                                    <input
-                                        type="number"
-                                        value={ev}
-                                        onChange={(event) => handleEVChange(index, event)}
-                                    />
-                                </li>
-                            )}
-                        </ul>
-                        <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            {enemyRoster && selectedEnemyPokemon.stats?.map((stat, index) =>
-                                <li key={index} className='liii'>stat</li>
-                            )}
-                        </ul>
+                        </div>
+                        <div>
+                            <h2>EVs</h2>
+                            <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                {selectedEnemyPokemon && selectedEnemyPokemon.evs?.map((ev, index) =>
+                                    <li key={index} className='liii'>
+                                        <input
+                                            style={{width:'50px', marginLeft:'10px'}}
+                                            type="number"
+                                            value={ev}
+                                            max='252'
+                                            onChange={(event) => handleEVChange(index, ev, event)}
+                                        />
+                                    </li>
+                                )}
+                            </ul>
+                        </div>
+                        <div>
+                            <h2>Stats</h2>
+                            <ul style={{listStyleType: 'none', padding: 0}}>
+                                {selectedEnemyPokemon && selectedEnemyPokemon.stats?.map((stat, index) =>
+                                    <li key={index} style={{marginLeft: '10px', marginBottom: '13px'}}>{stat}</li>
+                                )}
+                            </ul>
+                        </div>
                     </Card>
 
                 </div>

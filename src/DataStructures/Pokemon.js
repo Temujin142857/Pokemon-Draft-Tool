@@ -10,6 +10,12 @@ export class Pokemon{
         this.stats=[]
         this.level=level
         this.natureNums=[1,1,1,1,1,1]
+        if(specie){
+            for (let i = 0; i < 6; i++) {
+                this.recalculateStat(i);
+                console.log(this.stats[i])
+            }
+        }
     }
 
 
@@ -101,11 +107,13 @@ export class Pokemon{
     }
 
     recalculateStat(index){
+        console.log(this.specie.baseStats)
+        console.log(index)
         switch (index) {
             case 0:
                 this.stats[index]=((2*this.specie.baseStats[index]+this.ivs[index]+(this.evs[index]/4))*this.level/100)+(this.level/100)+10;
                 break;
-            case 1:
+            default:
                 this.stats[index]=(((2*this.specie.baseStats[index]+this.ivs[index]+(this.evs[index]/4))*this.level/100)+5)*this.natureNums[index-1];
         }
     }
