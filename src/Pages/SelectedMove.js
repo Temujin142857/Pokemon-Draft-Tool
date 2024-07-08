@@ -149,7 +149,7 @@ const SelectedMove = (props) => {
     const handleSearchInputChange = (event) => {
         const searchInput = event.target.value.toLowerCase();
         const filteredMoves = moves.filter((move) =>
-            move.name.toLowerCase().includes(searchInput) || move.type.toLowerCase().includes(searchInput)
+            move.name.toLowerCase().includes(searchInput) || move.type.toLowerCase().includes(searchInput) || move.accuracy.toString().includes(searchInput) || move.power.toString().includes(searchInput)
         );
         setSearchInput(searchInput);
         setFilteredMoves(filteredMoves);

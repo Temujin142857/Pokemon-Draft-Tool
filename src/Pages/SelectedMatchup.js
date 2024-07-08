@@ -10,6 +10,7 @@ import NatureSelect from '../Components/NatureSelect';
 import ItemSelect from "../Components/ItemSelect";
 import {NavigateForwards, NavigateBackwards} from "../Navigator";
 import {set} from "firebase/database";
+import AbilitySelect from "../Components/AbilitySelect";
 
 const SelectedMatchup = () => {
     const location = useLocation();
@@ -120,7 +121,7 @@ const SelectedMatchup = () => {
 
     const MoveItem = ({ move, style, onClick }) => {
         return (
-            <div onClick={onClick} style={style}>
+            <div onClick={onClick} style={{cursor: 'pointer'}}>
                 {move && (
                     <div className="square-item" style={{border: `2px solid ${getColorForType(move.type)}`}}>
                         {move.name}<br/>
@@ -217,18 +218,22 @@ const SelectedMatchup = () => {
                     }}>
                         <h1>{selectedUserPokemon.specie.name}</h1>
                         <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-                            <div>
-                                <h4>Select Nature</h4>
-                                <NatureSelect user={true}  defaultNature={{
+                                <div style={{marginLeft: '10px'}}>
+                                    <h4>Select Ability</h4>
+                                    <AbilitySelect user={true} defaultAbility={selectedUserPokemon.specie.abilities[0] } abilities={selectedUserPokemon.specie.abilities} onChange={handleNatureChange}/>
+                                </div>
+                                <div style={{marginLeft: '10px'}}>
+                                <h4 >Select Nature</h4>
+                                <NatureSelect user={true} defaultNature={{
                                     label: selectedUserPokemon ? selectedUserPokemon.nature : '',
                                     value: selectedUserPokemon ? selectedUserPokemon.nature.toLowerCase() : ''
                                 }} onChange={handleNatureChange}/>
+                                </div>
+                                <div style={{marginLeft: '10px'}}>
+                                    <h4>Select Item</h4>
+                                    <ItemSelect onChange={handleItemChange}/>
+                                </div>
                             </div>
-                            <div style={{marginLeft: '10px'}}>
-                                <h4>Select Item</h4>
-                                <ItemSelect onChange={handleItemChange}/>
-                            </div>
-                        </div>
 
                         <div style={{display: 'flex'}}>
                             <div>
@@ -304,7 +309,11 @@ const SelectedMatchup = () => {
                     <Card style={{display: 'flex', width: '100%', padding: '20px'}}>
                         <h1>{selectedEnemyPokemon.specie.name}</h1>
                         <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-                            <div>
+                            <div style={{marginLeft: '10px'}}>
+                                <h4>Select Ability</h4>
+                                <AbilitySelect user={false} defaultAbility={selectedEnemyPokemon.specie.abilities[0]} abilities={selectedEnemyPokemon.specie.abilities} onChange={handleNatureChange}/>
+                            </div>
+                            <div style={{marginLeft: '10px'}}>
                                 <h4>Select Nature</h4>
                                 <NatureSelect user={false} defaultNature={{
                                     label: selectedEnemyPokemon ? selectedEnemyPokemon.nature : '',
@@ -371,28 +380,24 @@ const SelectedMatchup = () => {
                             </div>
                             <div className="square-container">
                                 <MoveItem
-                                    style={{cursor: 'pointer'}}
                                     move={selectedEnemyPokemon.moves[0]}
                                     onClick={() => {
                                         selectMove(false, selectedEnemyPokemon.moves[0]);
                                     }}
                                 />
                                 <MoveItem
-                                    style={{cursor: 'pointer'}}
                                     move={selectedEnemyPokemon.moves[1]}
                                     onClick={() => {
                                         selectMove(false, selectedEnemyPokemon.moves[1]);
                                     }}
                                 />
                                 <MoveItem
-                                    style={{cursor: 'pointer'}}
                                     move={selectedEnemyPokemon.moves[2]}
                                     onClick={() => {
                                         selectMove(false, selectedEnemyPokemon.moves[2]);
                                     }}
                                 />
                                 <MoveItem
-                                    style={{cursor: 'pointer'}}
                                     move={selectedEnemyPokemon.moves[3]}
                                     onClick={() => {
                                         selectMove(false, selectedEnemyPokemon.moves[3]);

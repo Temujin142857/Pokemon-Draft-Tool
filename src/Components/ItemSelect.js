@@ -2,18 +2,25 @@ import React, { useState } from 'react';
 import Select from 'react-select';
 import { FaSearch } from 'react-icons/fa';
 
-// Define the list of Pokémon items (example list of 10 items)
+
 const pokemonItems = [
-    { value: 'potion', label: 'Potion' },
-    { value: 'super-potion', label: 'Super Potion' },
-    { value: 'hyper-potion', label: 'Hyper Potion' },
-    { value: 'max-potion', label: 'Max Potion' },
-    { value: 'full-heal', label: 'Full Heal' },
-    { value: 'revive', label: 'Revive' },
-    { value: 'max-revive', label: 'Max Revive' },
-    { value: 'ether', label: 'Ether' },
-    { value: 'max-ether', label: 'Max Ether' },
-    { value: 'elixir', label: 'Elixir' },
+    { value: 'leftovers', label: 'Leftovers' },
+    { value: 'black-belt', label: 'Black Belt' },
+    { value: 'choice-band', label: 'Choice Band' },
+    { value: 'choice-specs', label: 'Choice Specs' },
+    { value: 'focus-sash', label: 'Focus Sash' },
+    { value: 'life-orb', label: 'Life Orb' },
+    { value: 'light-clay', label: 'Light Clay' },
+    { value: 'power-herb', label: 'Power Herb' },
+    { value: 'white-herb', label: 'White Herb' },
+    { value: 'mental-herb', label: 'Mental Herb' },
+    { value: 'muscle-band', label: 'Muscle Band' },
+    { value: 'safety-goggles', label: 'Safety Goggles' },
+    { value: 'rocky-helmet', label: 'Rocky Helmet' },
+    { value: 'focus-band', label: 'Focus Band' },
+    { value: 'choice-scarf', label: 'Choice Scarf' },
+    { value: 'air-balloon', label: 'Air Balloon' },
+    { value: 'assault-vest', label: 'Assault Vest' },
 ];
 
 const PokemonItemsSelect = ({ onChange }) => {

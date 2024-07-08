@@ -2,7 +2,6 @@
   "name": "untitled",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://temujin142857.github.io/Ui-Project-2",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
