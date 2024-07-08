@@ -7,7 +7,7 @@ import {Specie} from "../DataStructures/Specie";
 import {Roster} from "../DataStructures/Roster";
 import {Move} from "../DataStructures/Move";
 import {Ability} from "../DataStructures/Ability";
-import NavigateToMatchup from "../Navigator";
+import {NavigateGeneral} from "../Navigator";
 import * as state from "../Composables/useRosters";
 
 
@@ -371,7 +371,8 @@ class Home extends React.Component {
                 new Roster("Roster 6", speciesList.slice(10, 20))
             ],
             navigate: false,
-            path:''
+            path:'',
+            data:null
         }
     }
 
@@ -392,14 +393,15 @@ class Home extends React.Component {
             }
             if (newRostersSelected.length === 2) {
                 console.log("Navigating to selected matchup with roster: ", newRostersSelected);
-                return { rostersSelected: newRostersSelected, navigate: true, path: '/selectedMatchup' };
+                const data={userRoster: newRostersSelected[0].toJSON(), enemyRoster: newRostersSelected[1].toJSON()};
+                return { data: data, navigate: true, path: '/selectedMatchup' };
             }
             return { rostersSelected: newRostersSelected };
         });
     }
 
     render() {
-       const { emptySlots, rostersSelected, rosters, navigate, path } = this.state;
+       const { emptySlots, rostersSelected, rosters, navigate, path, data } = this.state;
        return (
            <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingTop: '20px', paddingBottom: '20px'}}>
                <h1 className={'text'}>Welcome to DraftDex</h1>
@@ -422,7 +424,7 @@ class Home extends React.Component {
                        </li>
                    ))}
                </ul>
-               {navigate && <NavigateToMatchup rostersSelected={rostersSelected} path={path} />}
+               {navigate && <NavigateGeneral data={data} path={path} />}
            </div>
        );
     }

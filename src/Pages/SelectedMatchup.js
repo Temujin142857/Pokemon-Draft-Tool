@@ -8,12 +8,17 @@ import {Pokemon} from "../DataStructures/Pokemon";
 import {Roster} from "../DataStructures/Roster";
 import NatureSelect from '../Components/NatureSelect';
 import ItemSelect from "../Components/ItemSelect";
-
+import {NavigateGeneral} from "../Navigator";
+import {set} from "firebase/database";
 
 const SelectedMatchup = () => {
     const location = useLocation();
     const { state } = location;
 
+
+    const [navigate, setNavigate] = useState(false);
+    const [data, setData] = useState(null);
+    const [path, setPath] = useState('');
     const [userRoster, setUserRoster] = useState([]);
     const [enemyRoster, setEnemyRoster] = useState([]);
     const [selectedUserPokemon, setSelectedUserPokemon] = useState(null);
@@ -38,9 +43,8 @@ const SelectedMatchup = () => {
     };
 
     useEffect(() => {
-        console.log('hhh')
-        const initialUserRoster = state && state.param.length > 0 ? Roster.fromJSON(state.param[0]) : [];
-        const initialEnemyRoster = state && state.param.length > 1 ? Roster.fromJSON(state.param[1]) : [];
+        const initialUserRoster = state && state.data  ? Roster.fromJSON(state.data.userRoster) : [];
+        const initialEnemyRoster = state && state.data ? Roster.fromJSON(state.data.enemyRoster) : [];
 
         setUserRoster(initialUserRoster);
         setEnemyRoster(initialEnemyRoster);
@@ -83,6 +87,14 @@ const SelectedMatchup = () => {
 
     };
 
+    const selectMove = (user, move) => {
+        console.log("Navigating to selected matchup with roster: ", move);
+        const data={move: move, pokemon: user ? selectedUserPokemon.toJSON() : selectedEnemyPokemon.toJSON(), userRoster: userRoster.toJSON(), enemyRoster: enemyRoster.toJSON()}
+        setData(data);
+        setPath('/selectedMatchup/selectedMove')
+        setNavigate(true)
+    }
+
 
 
     const selectSpecie = (user, specie) => {
@@ -106,19 +118,20 @@ const SelectedMatchup = () => {
         }
     }
 
-    const MoveItem = ({ move }) => {
+    const MoveItem = ({ move, style, onClick }) => {
         return (
-            <div>
-            {move &&(
-                <div className="square-item" style={{border: `2px solid ${getColorForType(move.type)}`}}>
-                    {move.name}<br/>
-                    {`${move.power}/${move.accuracy}%/${move.pp}pp`}<br/>
-                    {`${move.type}/${move.category}`}
-                </div>
-            )}
+            <div onClick={onClick} style={style}>
+                {move && (
+                    <div className="square-item" style={{border: `2px solid ${getColorForType(move.type)}`}}>
+                        {move.name}<br/>
+                        {`${move.power}/${move.accuracy}%/${move.pp}pp`}<br/>
+                        {`${move.type}/${move.category}`}
+                    </div>
+                )}
             </div>
         );
     };
+
 
     function getColorForType(type) {
         switch (type) {
@@ -272,10 +285,18 @@ const SelectedMatchup = () => {
                                 </ul>
                             </div>
                             <div className="square-container">
-                                <MoveItem move={selectedUserPokemon.moves[0]}/>
-                                <MoveItem move={selectedUserPokemon.moves[1]}/>
-                                <MoveItem move={selectedUserPokemon.moves[2]}/>
-                                <MoveItem move={selectedUserPokemon.moves[3]}/>
+                                <MoveItem move={selectedUserPokemon.moves[0]} onClick={() => {
+                                    selectMove(true, selectedUserPokemon.moves[0]);
+                                }}/>
+                                <MoveItem move={selectedUserPokemon.moves[1]} onClick={() => {
+                                    selectMove(true, selectedUserPokemon.moves[1]);
+                                }}/>
+                                <MoveItem move={selectedUserPokemon.moves[2]} onClick={() => {
+                                    selectMove(true, selectedUserPokemon.moves[2]);
+                                }}/>
+                                <MoveItem move={selectedUserPokemon.moves[3]} onClick={() => {
+                                    selectMove(true, selectedUserPokemon.moves[3]);
+                                }}/>
                             </div>
                         </div>
                     </Card>
@@ -349,11 +370,36 @@ const SelectedMatchup = () => {
                                 </ul>
                             </div>
                             <div className="square-container">
-                                <MoveItem move={selectedEnemyPokemon.moves[0]}/>
-                                <MoveItem move={selectedEnemyPokemon.moves[1]}/>
-                                <MoveItem move={selectedEnemyPokemon.moves[2]}/>
-                                <MoveItem move={selectedEnemyPokemon.moves[3]}/>
+                                <MoveItem
+                                    style={{cursor: 'pointer'}}
+                                    move={selectedEnemyPokemon.moves[0]}
+                                    onClick={() => {
+                                        selectMove(false, selectedEnemyPokemon.moves[0]);
+                                    }}
+                                />
+                                <MoveItem
+                                    style={{cursor: 'pointer'}}
+                                    move={selectedEnemyPokemon.moves[1]}
+                                    onClick={() => {
+                                        selectMove(false, selectedEnemyPokemon.moves[1]);
+                                    }}
+                                />
+                                <MoveItem
+                                    style={{cursor: 'pointer'}}
+                                    move={selectedEnemyPokemon.moves[2]}
+                                    onClick={() => {
+                                        selectMove(false, selectedEnemyPokemon.moves[2]);
+                                    }}
+                                />
+                                <MoveItem
+                                    style={{cursor: 'pointer'}}
+                                    move={selectedEnemyPokemon.moves[3]}
+                                    onClick={() => {
+                                        selectMove(false, selectedEnemyPokemon.moves[3]);
+                                    }}
+                                />
                             </div>
+
 
                         </div>
                     </Card>
@@ -374,7 +420,7 @@ const SelectedMatchup = () => {
                 <div>
                     <h2 className={'text'}>{enemyRoster.name}</h2>
                     <ul>
-                        {enemyRoster && enemyRoster.species?.map((species, index) =>
+                    {enemyRoster && enemyRoster.species?.map((species, index) =>
                             <li key={index} className={'liii'}>{species.name}</li>
                         )}
                     </ul>
@@ -382,6 +428,7 @@ const SelectedMatchup = () => {
             </div>
         </div>
         )}
+            {navigate && <NavigateGeneral data={data} path={path} />}
         </div>
     );
 }

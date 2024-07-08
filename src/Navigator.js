@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import {Roster} from "./DataStructures/Roster";
 
 
-function NavigateToMatchup({ rostersSelected, path }) {
+export function NavigateToMatchup({ rostersSelected, path }) {
     const navigate = useNavigate();
     const param=[rostersSelected[0].toJSON(), rostersSelected[1].toJSON()];
     useEffect(() => {
@@ -13,4 +13,11 @@ function NavigateToMatchup({ rostersSelected, path }) {
     return null;
 }
 
-export default NavigateToMatchup;
+export function NavigateGeneral({data, path}){
+    const navigate = useNavigate();
+    useEffect(() => {
+        navigate(path, { state: { data }, replace: true });
+    }, [navigate, path, data]);
+    return null;
+}
+
