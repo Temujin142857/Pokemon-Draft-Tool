@@ -8,7 +8,7 @@ import {Pokemon} from "../DataStructures/Pokemon";
 import {Roster} from "../DataStructures/Roster";
 import NatureSelect from '../Components/NatureSelect';
 import ItemSelect from "../Components/ItemSelect";
-import {NavigateGeneral} from "../Navigator";
+import {NavigateForwards, NavigateBackwards} from "../Navigator";
 import {set} from "firebase/database";
 
 const SelectedMatchup = () => {
@@ -428,7 +428,7 @@ const SelectedMatchup = () => {
             </div>
         </div>
         )}
-            {navigate && <NavigateGeneral data={data} path={path} />}
+            {navigate && <NavigateBackwards data={data} path={path} />}
         </div>
     );
 }

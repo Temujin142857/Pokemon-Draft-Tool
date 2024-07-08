@@ -5,7 +5,7 @@ import { loadTeams } from "../Composables/useDatabase";
 import {Link, useLocation} from "react-router-dom";
 import { Move } from "../DataStructures/Move";
 import {Roster} from "../DataStructures/Roster";
-import { NavigateGeneral } from "../Navigator";
+import { NavigateBackwards } from "../Navigator";
 
 const SelectedMove = (props) => {
     const location = useLocation();
@@ -271,7 +271,7 @@ const SelectedMove = (props) => {
             </h2>
         </div>
             )}
-            {navigate && <NavigateGeneral data={data} path={path} />}
+            {navigate && <NavigateBackwards data={data} path={path} />}
         </>
     );
 };

@@ -13,10 +13,18 @@ export function NavigateToMatchup({ rostersSelected, path }) {
     return null;
 }
 
-export function NavigateGeneral({data, path}){
+export function NavigateBackwards({data, path}){
     const navigate = useNavigate();
     useEffect(() => {
         navigate(path, { state: { data }, replace: true });
+    }, [navigate, path, data]);
+    return null;
+}
+
+export function NavigateForwards({data, path}){
+    const navigate = useNavigate();
+    useEffect(() => {
+        navigate(path, { state: { data }, replace: false });
     }, [navigate, path, data]);
     return null;
 }

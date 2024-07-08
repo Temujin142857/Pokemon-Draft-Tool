@@ -7,7 +7,7 @@ import {Specie} from "../DataStructures/Specie";
 import {Roster} from "../DataStructures/Roster";
 import {Move} from "../DataStructures/Move";
 import {Ability} from "../DataStructures/Ability";
-import {NavigateGeneral} from "../Navigator";
+import {NavigateForwards} from "../Navigator";
 import * as state from "../Composables/useRosters";
 
 
@@ -400,6 +400,13 @@ class Home extends React.Component {
         });
     }
 
+    goToSocial = () =>{
+        this.setState((prevState) => {
+            return { data: {}, navigate: true, path: '/social' };
+        });
+    }
+
+
     render() {
        const { emptySlots, rostersSelected, rosters, navigate, path, data } = this.state;
        return (
@@ -424,7 +431,10 @@ class Home extends React.Component {
                        </li>
                    ))}
                </ul>
-               {navigate && <NavigateGeneral data={data} path={path} />}
+               <h2 className={'text link'} onClick={this.goToSocial}>
+                   Social Tab
+               </h2>
+               {navigate && <NavigateForwards data={data} path={path} />}
            </div>
        );
     }
