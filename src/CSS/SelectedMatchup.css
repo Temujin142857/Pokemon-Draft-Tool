@@ -1,19 +1,35 @@
 .container {
     display: flex;
     align-items: center;
-    margin-left: 10px;
+    margin-left: 30px;
 }
 .vertical-line {
     width: 3px; /* Line width */
-    height: 95vh; /* Line height */
+    height: 100%; /* Line height */
     background-color: black; /* Line color */
 }
 
 .liii{
+    text-align: center;
     margin-bottom: 10px;
     margin-top: 10px;
     color: lightgray;
     list-style-type: none;
+    cursor: pointer;
+}
+
+.selectedPokemon{
+    color: white;
+}
+
+.nameList{
+    min-width: 100px;
+    font-size: large;
+}
+
+
+.liii:hover{
+    color: white;
 }
 
 .square-container {

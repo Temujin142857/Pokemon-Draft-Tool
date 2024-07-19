@@ -103,18 +103,15 @@ const SelectedMatchup = () => {
         if (user) {
             const alreadyExists = userRoster.teams[0].pokemons.some(pokemon => pokemon.specie.name === pokemonToAdd.specie.name);
             if (!alreadyExists) {
-                userRoster.teams[0].addPokemon(pokemonToAdd);
-            } else {
-                // Remove the existing Pokemon from the team
-                userRoster.teams[0].removePokemon(pokemonToAdd.specie.name);
+                userRoster.teams[0].replacePokemon(selectedUserPokemon, pokemonToAdd);
+                setSelectedUserPokemon(pokemonToAdd);
+                console.log(userRoster.teams[0].pokemons);
             }
         } else {
             const alreadyExists = enemyRoster.teams[0].pokemons.some(pokemon => pokemon.specie.name === pokemonToAdd.specie.name);
             if (!alreadyExists) {
-                enemyRoster.teams[0].addPokemon(pokemonToAdd);
-            } else {
-                // Remove the existing Pokemon from the team
-                enemyRoster.teams[0].removePokemon(pokemonToAdd?.specie.name);
+                enemyRoster.teams[0].replacePokemon(selectedEnemyPokemon, pokemonToAdd);
+                setSelectedEnemyPokemon(pokemonToAdd);
             }
         }
     }
@@ -187,253 +184,277 @@ const SelectedMatchup = () => {
                     textAlign: 'center',
                     minHeight: '100vh',
                     minWidth: '100vw', paddingTop: '10px', paddingBottom: '20px'}}>
-            <div style={{textAlign: 'center', display: 'flex'}}>
-                <div>
-                    <h2 className={'text'}>{userRoster.name}</h2>
-                    <ul>
-                        {userRoster && userRoster.species?.map((species, index) =>
-                            <li key={index} className={'liii'}>{species.name}</li>
-                        )}
-                    </ul>
-                </div>
-
-                <div className={'container'}>
-                    <div className={'vertical-line'}></div>
-                </div>
-
-
-                <div style={{marginLeft: '10px'}}>
-                    <h2 className={'text'}>{userRoster.teams[0].name}</h2>
-                    <ul>
-                        {userRoster && userRoster.teams[0].pokemons.map((pokemon, index) =>
-                            <li key={index} className={'liii'}>{pokemon.specie.name}</li>
-                        )}
-                    </ul>
-                </div>
-
-                <div>
-                    <Card style={{
-                        width: '100%',
-                        padding: '20px'
-                    }}>
-                        <h1>{selectedUserPokemon.specie.name}</h1>
-                        <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-                                <div style={{marginLeft: '10px'}}>
-                                    <h4>Select Ability</h4>
-                                    <AbilitySelect user={true} defaultAbility={selectedUserPokemon.specie.abilities[0] } abilities={selectedUserPokemon.specie.abilities} onChange={handleNatureChange}/>
-                                </div>
-                                <div style={{marginLeft: '10px'}}>
-                                <h4 >Select Nature</h4>
-                                <NatureSelect user={true} defaultNature={{
-                                    label: selectedUserPokemon ? selectedUserPokemon.nature : '',
-                                    value: selectedUserPokemon ? selectedUserPokemon.nature.toLowerCase() : ''
-                                }} onChange={handleNatureChange}/>
-                                </div>
-                                <div style={{marginLeft: '10px'}}>
-                                    <h4>Select Item</h4>
-                                    <ItemSelect onChange={handleItemChange}/>
-                                </div>
-                            </div>
-
-                        <div style={{display: 'flex'}}>
-                            <div>
-                                <h2>_</h2>
-                                <ul style={{listStyleType: 'none', padding: 0}}>
-                                    <li className={'hli'}>Hp</li>
-                                    <li className={'hli'}>Atk</li>
-                                    <li className={'hli'}>Def</li>
-                                    <li className={'hli'}>SpA</li>
-                                    <li className={'hli'}>SpD</li>
-                                    <li className={'hli'}>Spe</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h2>IVs</h2>
-                                <ul style={{listStyleType: 'none', padding: 0}}>
-                                    {selectedUserPokemon && selectedUserPokemon.ivs?.map((iv, index) =>
-                                        <li key={index} className='liii'>
-                                            <input
-                                                style={{width: '40px', marginLeft: '10px'}}
-                                                type="number"
-                                                value={iv}
-                                                size='2'
-                                                maxLength='2'
-                                                onChange={(event) => handleIVChange(true, index, iv, event)}
-                                            />
-                                        </li>
-                                    )}
-                                </ul>
-                            </div>
-                            <div>
-                                <h2>EVs</h2>
-                                <ul style={{listStyleType: 'none', padding: 0}}>
-                                    {selectedUserPokemon && selectedUserPokemon.evs?.map((ev, index) =>
-                                        <li key={index} className='liii'>
-                                            <input
-                                                style={{width: '50px', marginLeft: '10px'}}
-                                                type="number"
-                                                value={ev}
-                                                size='3'
-                                                maxLength='3'
-                                                onChange={(event) => handleEVChange(true, index, ev, event)}
-                                            />
-                                        </li>
-                                    )}
-                                </ul>
-                            </div>
-                            <div>
-                                <h2>Stats</h2>
-                                <ul style={{listStyleType: 'none', padding: 0}}>
-                                    {selectedUserPokemon && selectedUserPokemon.stats?.map((stat, index) =>
-                                        <li key={index} style={{marginLeft: '10px', marginBottom: '13px'}}>{stat}</li>
-                                    )}
-                                </ul>
-                            </div>
-                            <div className="square-container">
-                                <MoveItem move={selectedUserPokemon.moves[0]} onClick={() => {
-                                    selectMove(true, selectedUserPokemon.moves[0]);
-                                }}/>
-                                <MoveItem move={selectedUserPokemon.moves[1]} onClick={() => {
-                                    selectMove(true, selectedUserPokemon.moves[1]);
-                                }}/>
-                                <MoveItem move={selectedUserPokemon.moves[2]} onClick={() => {
-                                    selectMove(true, selectedUserPokemon.moves[2]);
-                                }}/>
-                                <MoveItem move={selectedUserPokemon.moves[3]} onClick={() => {
-                                    selectMove(true, selectedUserPokemon.moves[3]);
-                                }}/>
-                            </div>
+                    <div style={{textAlign: 'center', display: 'flex'}}>
+                        <div>
+                            <h2 className={'text'} style={{marginLeft: '40px'}}>{userRoster.name}</h2>
+                            <ul>
+                                {userRoster && userRoster.species?.map((specie, index) =>
+                                    <li key={index} className={'liii nameList'}  onClick={() => {
+                                        selectSpecie(true, specie)
+                                    }}>{specie.name}</li>
+                                )}
+                            </ul>
                         </div>
-                    </Card>
 
-                    <Card style={{display: 'flex', width: '100%', padding: '20px'}}>
-                        <h1>{selectedEnemyPokemon.specie.name}</h1>
-                        <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-                            <div style={{marginLeft: '10px'}}>
-                                <h4>Select Ability</h4>
-                                <AbilitySelect user={false} defaultAbility={selectedEnemyPokemon.specie.abilities[0]} abilities={selectedEnemyPokemon.specie.abilities} onChange={handleNatureChange}/>
-                            </div>
-                            <div style={{marginLeft: '10px'}}>
-                                <h4>Select Nature</h4>
-                                <NatureSelect user={false} defaultNature={{
-                                    label: selectedEnemyPokemon ? selectedEnemyPokemon.nature : '',
-                                    value: selectedEnemyPokemon ? selectedEnemyPokemon.nature.toLowerCase() : ''
-                                }} onChange={handleNatureChange}/>
-                            </div>
-                            <div style={{marginLeft: '10px'}}>
-                                <h4>Select Item</h4>
-                                <ItemSelect onChange={handleItemChange}/>
-                            </div>
+                        <div className={'container'}>
+                            <div className={'vertical-line'}></div>
                         </div>
-                        <div style={{display: 'flex'}}>
-                            <div>
-                                <h2>_</h2>
-                                <ul style={{listStyleType: 'none', padding: 0}}>
-                                    <li className={'hli'}>Hp</li>
-                                    <li className={'hli'}>Atk</li>
-                                    <li className={'hli'}>Def</li>
-                                    <li className={'hli'}>SpA</li>
-                                    <li className={'hli'}>SpD</li>
-                                    <li className={'hli'}>Spe</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h2>IVs</h2>
-                                <ul style={{listStyleType: 'none', padding: 0}}>
-                                    {selectedEnemyPokemon && selectedEnemyPokemon.ivs?.map((iv, index) =>
-                                        <li key={index} className='liii'>
-                                            <input
-                                                style={{width: '40px', marginLeft: '10px'}}
-                                                type="number"
-                                                value={iv}
-                                                size='2'
-                                                maxLength='2'
-                                                onChange={(event) => handleIVChange(false, index, iv, event)}
-                                            />
-                                        </li>
-                                    )}
-                                </ul>
-                            </div>
-                            <div>
-                                <h2>EVs</h2>
-                                <ul style={{listStyleType: 'none', padding: 0}}>
-                                    {selectedEnemyPokemon && selectedEnemyPokemon.evs?.map((ev, index) =>
-                                        <li key={index} className='liii'>
-                                            <input
-                                                style={{width: '50px', marginLeft: '10px'}}
-                                                type="number"
-                                                value={ev}
-                                                max='252'
-                                                onChange={(event) => handleEVChange(false, index, ev, event)}
-                                            />
-                                        </li>
-                                    )}
-                                </ul>
-                            </div>
-                            <div>
-                                <h2>Stats</h2>
-                                <ul style={{listStyleType: 'none', padding: 0}}>
-                                    {selectedEnemyPokemon && selectedEnemyPokemon.stats?.map((stat, index) =>
-                                        <li key={index} style={{marginLeft: '10px', marginBottom: '13px'}}>{stat}</li>
-                                    )}
-                                </ul>
-                            </div>
-                            <div className="square-container">
-                                <MoveItem
-                                    move={selectedEnemyPokemon.moves[0]}
-                                    onClick={() => {
-                                        selectMove(false, selectedEnemyPokemon.moves[0]);
-                                    }}
-                                />
-                                <MoveItem
-                                    move={selectedEnemyPokemon.moves[1]}
-                                    onClick={() => {
-                                        selectMove(false, selectedEnemyPokemon.moves[1]);
-                                    }}
-                                />
-                                <MoveItem
-                                    move={selectedEnemyPokemon.moves[2]}
-                                    onClick={() => {
-                                        selectMove(false, selectedEnemyPokemon.moves[2]);
-                                    }}
-                                />
-                                <MoveItem
-                                    move={selectedEnemyPokemon.moves[3]}
-                                    onClick={() => {
-                                        selectMove(false, selectedEnemyPokemon.moves[3]);
-                                    }}
-                                />
-                            </div>
 
+
+                        <div style={{textAlign: 'center'}}>
+                            <h2 className={'text'} style={{marginLeft: '40px'}}>{userRoster.teams[0].name}</h2>
+                            <ul>
+                                {userRoster && userRoster.teams[0].pokemons.map((pokemon, index) =>
+                                    <li key={index}
+                                        className={selectedUserPokemon.specie.name === pokemon.specie.name ? 'liii nameList selectedPokemon' : 'liii nameList'}
+                                        onClick={() => {
+                                            setSelectedUserPokemon(pokemon)
+                                        }}>
+                                        {pokemon.specie.name}
+                                    </li>
+                                )}
+                            </ul>
+                        </div>
+
+                        <div>
+                            <Card style={{
+                                width: '100%',
+                                padding: '20px'
+                            }}>
+                                <h1>{selectedUserPokemon.specie.name}</h1>
+                                <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
+                                    <div style={{marginLeft: '10px'}}>
+                                        <h4>Select Ability</h4>
+                                        <AbilitySelect user={true}
+                                                       defaultAbility={selectedUserPokemon.specie.abilities[0]}
+                                                       abilities={selectedUserPokemon.specie.abilities}
+                                                       onChange={handleNatureChange}/>
+                                    </div>
+                                    <div style={{marginLeft: '10px'}}>
+                                        <h4>Select Nature</h4>
+                                        <NatureSelect user={true} defaultNature={{
+                                            label: selectedUserPokemon ? selectedUserPokemon.nature : '',
+                                            value: selectedUserPokemon ? selectedUserPokemon.nature.toLowerCase() : ''
+                                        }} onChange={handleNatureChange}/>
+                                    </div>
+                                    <div style={{marginLeft: '10px'}}>
+                                        <h4>Select Item</h4>
+                                        <ItemSelect onChange={handleItemChange}/>
+                                    </div>
+                                </div>
+
+                                <div style={{display: 'flex'}}>
+                                    <div>
+                                        <h2>_</h2>
+                                        <ul style={{listStyleType: 'none', padding: 0}}>
+                                            <li className={'hli'}>Hp</li>
+                                            <li className={'hli'}>Atk</li>
+                                            <li className={'hli'}>Def</li>
+                                            <li className={'hli'}>SpA</li>
+                                            <li className={'hli'}>SpD</li>
+                                            <li className={'hli'}>Spe</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h2>IVs</h2>
+                                        <ul style={{listStyleType: 'none', padding: 0}}>
+                                            {selectedUserPokemon && selectedUserPokemon.ivs?.map((iv, index) =>
+                                                <li key={index} className='liii'>
+                                                    <input
+                                                        style={{width: '40px', marginLeft: '10px'}}
+                                                        type="number"
+                                                        value={iv}
+                                                        size='2'
+                                                        maxLength='2'
+                                                        onChange={(event) => handleIVChange(true, index, iv, event)}
+                                                    />
+                                                </li>
+                                            )}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h2>EVs</h2>
+                                        <ul style={{listStyleType: 'none', padding: 0}}>
+                                            {selectedUserPokemon && selectedUserPokemon.evs?.map((ev, index) =>
+                                                <li key={index} className='liii'>
+                                                    <input
+                                                        style={{width: '50px', marginLeft: '10px'}}
+                                                        type="number"
+                                                        value={ev}
+                                                        size='3'
+                                                        maxLength='3'
+                                                        onChange={(event) => handleEVChange(true, index, ev, event)}
+                                                    />
+                                                </li>
+                                            )}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h2>Stats</h2>
+                                        <ul style={{listStyleType: 'none', padding: 0}}>
+                                            {selectedUserPokemon && selectedUserPokemon.stats?.map((stat, index) =>
+                                                <li key={index}
+                                                    style={{marginLeft: '10px', marginBottom: '13px'}}>{stat}</li>
+                                            )}
+                                        </ul>
+                                    </div>
+                                    <div className="square-container">
+                                        <MoveItem move={selectedUserPokemon.moves[0]} onClick={() => {
+                                            selectMove(true, selectedUserPokemon.moves[0]);
+                                        }}/>
+                                        <MoveItem move={selectedUserPokemon.moves[1]} onClick={() => {
+                                            selectMove(true, selectedUserPokemon.moves[1]);
+                                        }}/>
+                                        <MoveItem move={selectedUserPokemon.moves[2]} onClick={() => {
+                                            selectMove(true, selectedUserPokemon.moves[2]);
+                                        }}/>
+                                        <MoveItem move={selectedUserPokemon.moves[3]} onClick={() => {
+                                            selectMove(true, selectedUserPokemon.moves[3]);
+                                        }}/>
+                                    </div>
+                                </div>
+                            </Card>
+
+                            <Card style={{display: 'flex', width: '100%', padding: '20px'}}>
+                                <h1>{selectedEnemyPokemon.specie.name}</h1>
+                                <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
+                                    <div style={{marginLeft: '10px'}}>
+                                        <h4>Select Ability</h4>
+                                        <AbilitySelect user={false}
+                                                       defaultAbility={selectedEnemyPokemon.specie.abilities[0]}
+                                                       abilities={selectedEnemyPokemon.specie.abilities}
+                                                       onChange={handleNatureChange}/>
+                                    </div>
+                                    <div style={{marginLeft: '10px'}}>
+                                        <h4>Select Nature</h4>
+                                        <NatureSelect user={false} defaultNature={{
+                                            label: selectedEnemyPokemon ? selectedEnemyPokemon.nature : '',
+                                            value: selectedEnemyPokemon ? selectedEnemyPokemon.nature.toLowerCase() : ''
+                                        }} onChange={handleNatureChange}/>
+                                    </div>
+                                    <div style={{marginLeft: '10px'}}>
+                                        <h4>Select Item</h4>
+                                        <ItemSelect onChange={handleItemChange}/>
+                                    </div>
+                                </div>
+                                <div style={{display: 'flex'}}>
+                                    <div>
+                                        <h2>_</h2>
+                                        <ul style={{listStyleType: 'none', padding: 0}}>
+                                            <li className={'hli'}>Hp</li>
+                                            <li className={'hli'}>Atk</li>
+                                            <li className={'hli'}>Def</li>
+                                            <li className={'hli'}>SpA</li>
+                                            <li className={'hli'}>SpD</li>
+                                            <li className={'hli'}>Spe</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h2>IVs</h2>
+                                        <ul style={{listStyleType: 'none', padding: 0}}>
+                                            {selectedEnemyPokemon && selectedEnemyPokemon.ivs?.map((iv, index) =>
+                                                <li key={index} className='liii'>
+                                                    <input
+                                                        style={{width: '40px', marginLeft: '10px'}}
+                                                        type="number"
+                                                        value={iv}
+                                                        size='2'
+                                                        maxLength='2'
+                                                        onChange={(event) => handleIVChange(false, index, iv, event)}
+                                                    />
+                                                </li>
+                                            )}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h2>EVs</h2>
+                                        <ul style={{listStyleType: 'none', padding: 0}}>
+                                            {selectedEnemyPokemon && selectedEnemyPokemon.evs?.map((ev, index) =>
+                                                <li key={index} className='liii'>
+                                                    <input
+                                                        style={{width: '50px', marginLeft: '10px'}}
+                                                        type="number"
+                                                        value={ev}
+                                                        max='252'
+                                                        onChange={(event) => handleEVChange(false, index, ev, event)}
+                                                    />
+                                                </li>
+                                            )}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h2>Stats</h2>
+                                        <ul style={{listStyleType: 'none', padding: 0}}>
+                                            {selectedEnemyPokemon && selectedEnemyPokemon.stats?.map((stat, index) =>
+                                                <li key={index}
+                                                    style={{marginLeft: '10px', marginBottom: '13px'}}>{stat}</li>
+                                            )}
+                                        </ul>
+                                    </div>
+                                    <div className="square-container">
+                                        <MoveItem
+                                            move={selectedEnemyPokemon.moves[0]}
+                                            onClick={() => {
+                                                selectMove(false, selectedEnemyPokemon.moves[0]);
+                                            }}
+                                        />
+                                        <MoveItem
+                                            move={selectedEnemyPokemon.moves[1]}
+                                            onClick={() => {
+                                                selectMove(false, selectedEnemyPokemon.moves[1]);
+                                            }}
+                                        />
+                                        <MoveItem
+                                            move={selectedEnemyPokemon.moves[2]}
+                                            onClick={() => {
+                                                selectMove(false, selectedEnemyPokemon.moves[2]);
+                                            }}
+                                        />
+                                        <MoveItem
+                                            move={selectedEnemyPokemon.moves[3]}
+                                            onClick={() => {
+                                                selectMove(false, selectedEnemyPokemon.moves[3]);
+                                            }}
+                                        />
+                                    </div>
+
+
+                                </div>
+                            </Card>
 
                         </div>
-                    </Card>
 
+                        <div>
+                            <h2 className={'text'} style={{marginLeft: '40px'}}>{enemyRoster.teams[0].name}</h2>
+                            <ul>
+                                {enemyRoster && enemyRoster.teams[0].pokemons.map((pokemon, index) =>
+                                    <li key={index}
+                                        className={selectedEnemyPokemon.specie.name === pokemon.specie.name ? 'liii nameList selectedPokemon' : 'nameList liii'}
+                                        onClick={() => {
+                                            setSelectedEnemyPokemon(pokemon)
+                                        }}>
+                                        {pokemon.specie.name}
+                                    </li>
+                                )}
+                            </ul>
+                        </div>
+                        <div className={'container'}>
+                            <div className={'vertical-line'}></div>
+                        </div>
+                        <div>
+                            <h2 className={'text'} style={{marginLeft: '40px'}}>{enemyRoster.name}</h2>
+                            <ul>
+                                {enemyRoster && enemyRoster.species?.map((specie, index) =>
+                                    <li key={index} className={'liii nameList'} onClick={() => {
+                                        selectSpecie(false, specie)
+                                    }}>{specie.name}</li>
+                                )}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-
-                <div className={'container'}>
-                    <div className={'vertical-line'}></div>
-                </div>
-                <div style={{marginLeft: '10px'}}>
-                    <h2 className={'text'}>{enemyRoster.teams[0].name}</h2>
-                    <ul>
-                        {userRoster && enemyRoster.teams[0].pokemons.map((pokemon, index) =>
-                            <li key={index} className={'liii'}>{pokemon.specie.name}</li>
-                        )}
-                    </ul>
-                </div>
-                <div>
-                    <h2 className={'text'}>{enemyRoster.name}</h2>
-                    <ul>
-                    {enemyRoster && enemyRoster.species?.map((species, index) =>
-                            <li key={index} className={'liii'}>{species.name}</li>
-                        )}
-                    </ul>
-                </div>
-            </div>
-        </div>
-        )}
-            {navigate && <NavigateBackwards data={data} path={path} />}
+            )}
+            {navigate && <NavigateBackwards data={data} path={path}/>}
         </div>
     );
 }

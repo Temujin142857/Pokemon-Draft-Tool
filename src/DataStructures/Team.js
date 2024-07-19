@@ -6,12 +6,27 @@ export class Team{
         this.pokemons = pokemons;
     }
 
-    addPokemon = (pokemon) => {
-        this.pokemons.push(pokemon);
+    addPokemon = (pokemonToAdd) => {
+        if(!this.pokemons.some(pokemon => pokemon.specie.name === pokemonToAdd.specie.name) && this.pokemons.length<6){
+            this.pokemons.push(pokemonToAdd);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    replacePokemon= (pokemonToReplace, newPokemon)=>{
+        if(this.pokemons.some(pokemon => pokemon.specie.name === pokemonToReplace.specie.name)){
+            let index=this.pokemons.indexOf(pokemonToReplace);
+            this.pokemons[index]=newPokemon;
+            return true;
+        }else{
+            return false;
+        }
     }
 
     removePokemon = (pokemon1) => {
-        this.pokemons = this.pokemons.filter(pokemon => pokemon1.species.name !== pokemon.species.name);
+        this.pokemons = this.pokemons.filter(pokemon => pokemon1.specie.name !== pokemon.specie.name);
     }
     toJSON() {
         return {
