@@ -10,6 +10,7 @@ import {Ability} from "../DataStructures/Ability";
 import {NavigateForwards} from "../Navigator";
 import * as state from "../Composables/useRosters";
 import Header from "../Components/Header";
+import {getL} from "../Composables/useLexicon";
 
 
 const speciesList = [
@@ -454,7 +455,7 @@ class Home extends React.Component {
        return (
            <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingBottom: '20px'}}>
                <Header></Header>
-               <h1 className={'text'}>Welcome to DraftDex</h1>
+               <h1 className={'text'}>{getL('homeHeader')}</h1>
                <h3 className={'text'}>
                    Select two rosters to begin comparing or
                    Create a new roster to add to the draft

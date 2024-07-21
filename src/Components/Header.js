@@ -1,10 +1,27 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavLink, useLocation} from 'react-router-dom';
-import '../CSS/Header.css'; // For custom styling
+import '../CSS/Header.css';
+import {getL, swapLNG} from "../Composables/useLexicon";
 
 const Header = ({navBarBehaviour}) => {
     const location = useLocation();
     const currentPath = location.pathname;
+
+    const [text, setText] = useState({
+        home: 'Home',
+        roster: 'Create Roster',
+        matchup: 'Matchup',
+        moves: 'Moves',
+        social: 'Social',
+        lng: 'en'
+    });
+
+    const [dummyState, setDummyState] = useState(false);
+
+    const triggerRerender = () => {
+        setDummyState(prev => !prev); // Toggle state to force re-render
+    };
+
 
     const isActive = (path) => currentPath === path;
 
@@ -21,6 +38,12 @@ const Header = ({navBarBehaviour}) => {
         navBarBehaviour[e]();
     }
 
+    const languageSwap=()=>{
+        setText(swapLNG(text));
+        triggerRerender()
+    }
+
+
     return (
         <nav>
             <ul className="ulh">
@@ -30,7 +53,7 @@ const Header = ({navBarBehaviour}) => {
                         activeClassName="active"
                         className={'nav-button'}
                     >
-                        Home
+                        {text.home}
                     </NavLink>
                 </li>
                 <li className="lih">
@@ -39,25 +62,25 @@ const Header = ({navBarBehaviour}) => {
                         activeClassName="active"
                         className={'nav-button'}
                     >
-                        Create Roster
+                        {text.roster}
                     </NavLink>
                 </li>
                 <li className="lih">
                     <button
                         className={`nav-button ${isDisabled('/selectedMatchup') ? 'disabled' : ''} ${isActive('/selectedMatchup') ? 'active' : ''}`}
-                        onClick={()=>onLinkClick(0)}
+                        onClick={() => onLinkClick(0)}
                         disabled={isDisabled('/selectedMatchup')}
                     >
-                        Matchup
+                        {text.matchup}
                     </button>
                 </li>
                 <li className="lih">
                     <button
                         className={`nav-button ${isDisabled('/selectedMatchup/selectedMove') ? 'disabled' : ''} ${isActive('/selectedMatchup/selectedMove') ? 'active' : ''}`}
-                        onClick={()=>onLinkClick(1)}
+                        onClick={() => onLinkClick(1)}
                         disabled={isDisabled('/selectedMatchup/selectedMove')}
                     >
-                        Moves
+                        {text.moves}
                     </button>
                 </li>
                 <li className="lih">
@@ -66,8 +89,16 @@ const Header = ({navBarBehaviour}) => {
                         activeClassName="active"
                         className={'nav-button'}
                     >
-                        Social
+                        {text.social}
                     </NavLink>
+                </li>
+                <li className="lih">
+                    <button
+                        className={`nav-button`}
+                        onClick={() => languageSwap()}
+                    >
+                        {text.lng}
+                    </button>
                 </li>
             </ul>
         </nav>
