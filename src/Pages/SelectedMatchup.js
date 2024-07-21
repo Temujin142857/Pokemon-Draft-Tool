@@ -11,6 +11,8 @@ import ItemSelect from "../Components/ItemSelect";
 import {NavigateForwards, NavigateBackwards} from "../Navigator";
 import {set} from "firebase/database";
 import AbilitySelect from "../Components/AbilitySelect";
+import {calculateDamage} from "../Composables/useDamage";
+import {SiPokemon} from "react-icons/si";
 
 const SelectedMatchup = () => {
     const location = useLocation();
@@ -89,8 +91,7 @@ const SelectedMatchup = () => {
     };
 
     const selectMove = (user, move) => {
-        console.log("Navigating to selected matchup with roster: ", move);
-        const data={move: move, pokemon: user ? selectedUserPokemon.toJSON() : selectedEnemyPokemon.toJSON(), userRoster: userRoster.toJSON(), enemyRoster: enemyRoster.toJSON()}
+        const data={move: move, pokemon: user ? Pokemon.jsonFromPartialObject(selectedUserPokemon) : Pokemon.jsonFromPartialObject(selectedEnemyPokemon), userRoster: userRoster.toJSON(), enemyRoster: enemyRoster.toJSON()}
         setData(data);
         setPath('/selectedMatchup/selectedMove')
         setNavigate(true)
@@ -116,19 +117,34 @@ const SelectedMatchup = () => {
         }
     }
 
-    const MoveItem = ({ move, style, onClick }) => {
+    const dmgCalc=(move, min, user)=>{
+        let dmg= user ? calculateDamage(selectedUserPokemon, move, selectedEnemyPokemon) : calculateDamage(selectedEnemyPokemon, move, selectedUserPokemon);
+        let percentDmg= user ? {max: Math.round((dmg.max/selectedEnemyPokemon.stats[0])*1000)/10, min: Math.round((dmg.min/selectedEnemyPokemon.stats[0])*1000)/10} : {max: Math.round((dmg.max/selectedUserPokemon.stats[0])*1000)/10, min: Math.round((dmg.min/selectedUserPokemon.stats[0])*1000)/10}
+        return min ? percentDmg.min : percentDmg.max;
+    }
+
+    const MoveItem = ({ move, style, onClick, user }) => {
         return (
-            <div onClick={onClick} style={{cursor: 'pointer'}}>
-                {move && (
-                    <div className="square-item" style={{border: `2px solid ${getColorForType(move.type)}`}}>
-                        {move.name}<br/>
-                        {`${move.power}/${move.accuracy}%/${move.pp}pp`}<br/>
-                        {`${move.type}/${move.category}`}
-                    </div>
-                )}
+            <div>
+                <div onClick={onClick} style={{cursor: 'pointer'}}>
+                    {move && (
+                        <div className="square-item" style={{border: `2px solid ${getColorForType(move.type)}`}}>
+                            {move.name}<br/>
+                            {`${move.power}/${move.accuracy}%/${move.pp}pp`}<br/>
+                            {`${move.type}/${move.category}`}
+                        </div>
+                    )}
+                </div>
+                <div>
+                    {dmgCalc(move, true, user) + " - " + dmgCalc(move, false, user) + "%"}
+                </div>
             </div>
+
         );
     };
+
+
+
 
 
     function getColorForType(type) {
@@ -264,6 +280,7 @@ const SelectedMatchup = () => {
                                                         style={{width: '40px', marginLeft: '10px'}}
                                                         type="number"
                                                         value={iv}
+                                                        max='31'
                                                         size='2'
                                                         maxLength='2'
                                                         onChange={(event) => handleIVChange(true, index, iv, event)}
@@ -281,6 +298,8 @@ const SelectedMatchup = () => {
                                                         style={{width: '50px', marginLeft: '10px'}}
                                                         type="number"
                                                         value={ev}
+                                                        step="4"
+                                                        max='252'
                                                         size='3'
                                                         maxLength='3'
                                                         onChange={(event) => handleEVChange(true, index, ev, event)}
@@ -301,16 +320,16 @@ const SelectedMatchup = () => {
                                     <div className="square-container">
                                         <MoveItem move={selectedUserPokemon.moves[0]} onClick={() => {
                                             selectMove(true, selectedUserPokemon.moves[0]);
-                                        }}/>
+                                        }} user={true}/>
                                         <MoveItem move={selectedUserPokemon.moves[1]} onClick={() => {
                                             selectMove(true, selectedUserPokemon.moves[1]);
-                                        }}/>
+                                        }} user={true}/>
                                         <MoveItem move={selectedUserPokemon.moves[2]} onClick={() => {
                                             selectMove(true, selectedUserPokemon.moves[2]);
-                                        }}/>
+                                        }} user={true}/>
                                         <MoveItem move={selectedUserPokemon.moves[3]} onClick={() => {
                                             selectMove(true, selectedUserPokemon.moves[3]);
-                                        }}/>
+                                        }} user={true}/>
                                     </div>
                                 </div>
                             </Card>
@@ -359,6 +378,7 @@ const SelectedMatchup = () => {
                                                         type="number"
                                                         value={iv}
                                                         size='2'
+                                                        max='31'
                                                         maxLength='2'
                                                         onChange={(event) => handleIVChange(false, index, iv, event)}
                                                     />
@@ -375,6 +395,7 @@ const SelectedMatchup = () => {
                                                         style={{width: '50px', marginLeft: '10px'}}
                                                         type="number"
                                                         value={ev}
+                                                        step="4"
                                                         max='252'
                                                         onChange={(event) => handleEVChange(false, index, ev, event)}
                                                     />
@@ -397,24 +418,28 @@ const SelectedMatchup = () => {
                                             onClick={() => {
                                                 selectMove(false, selectedEnemyPokemon.moves[0]);
                                             }}
+                                            user={false}
                                         />
                                         <MoveItem
                                             move={selectedEnemyPokemon.moves[1]}
                                             onClick={() => {
                                                 selectMove(false, selectedEnemyPokemon.moves[1]);
                                             }}
+                                            user={false}
                                         />
                                         <MoveItem
                                             move={selectedEnemyPokemon.moves[2]}
                                             onClick={() => {
                                                 selectMove(false, selectedEnemyPokemon.moves[2]);
                                             }}
+                                            user={false}
                                         />
                                         <MoveItem
                                             move={selectedEnemyPokemon.moves[3]}
                                             onClick={() => {
                                                 selectMove(false, selectedEnemyPokemon.moves[3]);
                                             }}
+                                            user={false}
                                         />
                                     </div>
 

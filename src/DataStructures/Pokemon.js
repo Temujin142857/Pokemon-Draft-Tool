@@ -113,18 +113,16 @@ export class Pokemon{
                 this.natureNums = [1, 1, 1, 1, 0.9, 1.1]; // Speed increased, Sp. Defense decreased
                 break;
         }
-        console.log('before', this.stats)
         for (let i = 0; i < 6; i++) {
             this.recalculateStat(i);
         }
-        console.log('after', this.stats)
     }
 
     recalculateStat(index){
        
         switch (index) {
             case 0:
-                this.stats[index]=Math.floor(((2*this.specie.baseStats[index]+this.ivs[index]+(Math.floor(this.evs[index]/4)))*this.level/100)+(this.level/100)+10);
+                this.stats[index]=Math.floor(((2*this.specie.baseStats[index]+this.ivs[index]+(Math.floor(this.evs[index]/4)))*this.level/100)+(this.level)+10);
                 break;
             default:
                 this.stats[index]=Math.floor((((2*this.specie.baseStats[index]+this.ivs[index]+(Math.floor(this.evs[index]/4)))*this.level/100)+5)*this.natureNums[index]);
@@ -147,6 +145,21 @@ export class Pokemon{
     static fromJSON(json) {
         return new Pokemon(json.specie, json.nature, json.moves, json.evs, json.ivs, json.ability, json.item, json.level);
     }
+
+    static jsonFromPartialObject(object){
+        return {
+            specie: object.specie,
+            nature: object.nature,
+            moves: object.moves,
+            evs: object.evs,
+            ivs: object.ivs,
+            ability: object.ability,
+            item: object.item,
+            level: object.level
+        };
+    }
+
+
 }
 
 export function createPokemonFromSnapshot(snapshot){
