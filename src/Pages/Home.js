@@ -10,7 +10,7 @@ import {Ability} from "../DataStructures/Ability";
 import {NavigateForwards} from "../Navigator";
 import * as state from "../Composables/useRosters";
 import Header from "../Components/Header";
-import {getL} from "../Composables/useLexicon";
+import {getL, swapLNG} from "../Composables/useLexicon";
 
 
 const speciesList = [
@@ -415,7 +415,13 @@ class Home extends React.Component {
             ],
             navigate: false,
             path:'',
-            data:null
+            data:null,
+            text: {
+                homeHeader: "Welcome to DraftDex",
+                homeHeader2: "Select two rosters to begin comparing or create a new roster to add to the draft",
+                newRoster: "+ New Roster",
+                socialTab: "Social Tab"
+            }
         }
     }
 
@@ -424,6 +430,7 @@ class Home extends React.Component {
         this.setState({
             emptySlots: this.state.slots - (this.state.rosters ? this.state.rosters.length : 0)
         });
+        console.log('hi')
     }
 
     selectRoster = (roster) => {
@@ -449,16 +456,20 @@ class Home extends React.Component {
         });
     }
 
+    languageSwap = () =>{
+        this.setState((prevState) => {return {text: swapLNG(prevState.text)}})
+
+    }
+
 
     render() {
-       const { emptySlots, rostersSelected, rosters, navigate, path, data, navigationBehaviour } = this.state;
+       const { emptySlots, rostersSelected, rosters, navigate, path, data, text } = this.state;
        return (
            <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingBottom: '20px'}}>
-               <Header></Header>
-               <h1 className={'text'}>{getL('homeHeader')}</h1>
+               <Header reboot={this.languageSwap}></Header>
+               <h1 className={'text'}>{text["homeHeader"]}</h1>
                <h3 className={'text'}>
-                   Select two rosters to begin comparing or
-                   Create a new roster to add to the draft
+                   {text['homeHeader2']}
                </h3>
                <ul style={{columns: '3', marginTop: '5%'}}>
                    {rosters && rosters.map((roster, index) =>
@@ -471,12 +482,12 @@ class Home extends React.Component {
                    )}
                    {Array.from(Array(emptySlots)).map((_, index) => (
                        <li className='lii' key={index}>
-                           <Link to="/createRoster" className={'link'}>+ New Roster</Link>
+                           <Link to="/createRoster" className={'link'}>{text["newRoster"]}</Link>
                        </li>
                    ))}
                </ul>
                <h2 className={'text link'} onClick={this.goToSocial}>
-                   Social Tab
+                   {text["social"]}
                </h2>
                {navigate && <NavigateForwards data={data} path={path} />}
            </div>

@@ -3,7 +3,7 @@ import {NavLink, useLocation} from 'react-router-dom';
 import '../CSS/Header.css';
 import {getL, swapLNG} from "../Composables/useLexicon";
 
-const Header = ({navBarBehaviour}) => {
+const Header = ({navBarBehaviour, reboot}) => {
     const location = useLocation();
     const currentPath = location.pathname;
 
@@ -41,6 +41,7 @@ const Header = ({navBarBehaviour}) => {
     const languageSwap=()=>{
         setText(swapLNG(text));
         triggerRerender()
+        if(reboot){reboot()}
     }
 
 
