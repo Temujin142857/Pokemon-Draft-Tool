@@ -9,6 +9,7 @@ import { NavigateBackwards } from "../Navigator";
 import "../CSS/SelectedMove.css"
 import {Slide, toast, ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Header from "../Components/Header";
 
 const SelectedMove = (props) => {
     const location = useLocation();
@@ -271,8 +272,14 @@ const SelectedMove = (props) => {
         console.log(move, selectedMove);
     }
 
+    const navBarBehaviourM=[
+        ()=>{handleSave()},
+        ()=>{}
+    ];
+
     return (
         <>
+            <Header navBarBehaviour={navBarBehaviourM}></Header>
             {selectedPokemon && (
         <div style={{ backgroundColor: "#302B2B", textAlign: "center", minHeight: "100vh", paddingTop: "20px", paddingBottom: "20px" }}>
             <div style={{ textAlign: "center", display: "flex", justifyContent: "center", alignItems: "flex-start" }}>

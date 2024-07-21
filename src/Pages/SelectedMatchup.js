@@ -192,15 +192,17 @@ const SelectedMatchup = () => {
         }
     }
 
-    const navBarBehaviour=[
+    const navBarBehaviourM=[
         ()=>{},
-
+        ()=>{
+            selectMove(true, selectedUserPokemon.moves[0]);
+        }
     ];
 
 
     return (
         <div>
-            <Header navBarBehavior={navBarBehaviour}></Header>
+            <Header navBarBehaviour={navBarBehaviourM}></Header>
             {userRoster.species && (
                 <div style={{
                     backgroundColor: '#302B2B',

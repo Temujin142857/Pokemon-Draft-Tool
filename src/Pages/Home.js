@@ -450,7 +450,7 @@ class Home extends React.Component {
 
 
     render() {
-       const { emptySlots, rostersSelected, rosters, navigate, path, data } = this.state;
+       const { emptySlots, rostersSelected, rosters, navigate, path, data, navigationBehaviour } = this.state;
        return (
            <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingBottom: '20px'}}>
                <Header></Header>

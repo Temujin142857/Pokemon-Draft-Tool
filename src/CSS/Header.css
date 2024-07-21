@@ -50,6 +50,7 @@ a.disabled {
     border-radius: 4px;
 }
 
+
 .nav-link.disabled, .nav-button.disabled {
     color: grey;
     pointer-events: none;

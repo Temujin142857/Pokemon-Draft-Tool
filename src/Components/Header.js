@@ -6,12 +6,12 @@ const Header = ({navBarBehaviour}) => {
     const location = useLocation();
     const currentPath = location.pathname;
 
+    const isActive = (path) => currentPath === path;
 
     const isDisabled = (path) => {
-        return true;
         switch(path){
             case "/selectedMatchup":
-                return !(currentPath==='/'||currentPath==='/selectedMatchup/selectedMove');
+                return currentPath!=='/selectedMatchup/selectedMove';
             case "/selectedMatchup/selectedMove":
                 return currentPath!=='/selectedMatchup';
         }
@@ -44,7 +44,7 @@ const Header = ({navBarBehaviour}) => {
                 </li>
                 <li className="lih">
                     <button
-                        className={`nav-button ${isDisabled('/selectedMatchup') ? 'disabled' : ''}`}
+                        className={`nav-button ${isDisabled('/selectedMatchup') ? 'disabled' : ''} ${isActive('/selectedMatchup') ? 'active' : ''}`}
                         onClick={()=>onLinkClick(0)}
                         disabled={isDisabled('/selectedMatchup')}
                     >
@@ -53,7 +53,7 @@ const Header = ({navBarBehaviour}) => {
                 </li>
                 <li className="lih">
                     <button
-                        className={`nav-button ${isDisabled('/selectedMatchup/selectedMove') ? 'disabled' : ''}`}
+                        className={`nav-button ${isDisabled('/selectedMatchup/selectedMove') ? 'disabled' : ''} ${isActive('/selectedMatchup/selectedMove') ? 'active' : ''}`}
                         onClick={()=>onLinkClick(1)}
                         disabled={isDisabled('/selectedMatchup/selectedMove')}
                     >
