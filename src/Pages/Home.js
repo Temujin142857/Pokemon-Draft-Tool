@@ -9,6 +9,7 @@ import {Move} from "../DataStructures/Move";
 import {Ability} from "../DataStructures/Ability";
 import {NavigateForwards} from "../Navigator";
 import * as state from "../Composables/useRosters";
+import Header from "../Components/Header";
 
 
 const speciesList = [
@@ -451,7 +452,8 @@ class Home extends React.Component {
     render() {
        const { emptySlots, rostersSelected, rosters, navigate, path, data } = this.state;
        return (
-           <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingTop: '20px', paddingBottom: '20px'}}>
+           <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingBottom: '20px'}}>
+               <Header></Header>
                <h1 className={'text'}>Welcome to DraftDex</h1>
                <h3 className={'text'}>
                    Select two rosters to begin comparing or

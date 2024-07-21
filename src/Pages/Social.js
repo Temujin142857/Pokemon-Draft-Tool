@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Organising from "../Components/Organising";
 import Uploading from "../Components/Uploading";
+import Header from "../Components/Header";
 
 
 // Mock data for rosters
@@ -23,8 +24,9 @@ const Social = () => {
     };
 
     return (
-        <div style={{display: 'flex', alignContent: 'space-between', backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingTop: '20px', paddingBottom: '20px'}}>
-
+        <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingBottom: '20px'}}>
+            <Header></Header>
+            <div style={{display: 'flex', alignContent: 'space-between', }}>
             <Uploading></Uploading>
         <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
             <h2 className={'text'}>Share and Comment on Rosters</h2>
@@ -48,6 +50,7 @@ const Social = () => {
             ))}
         </div>
         <Organising></Organising>
+        </div>
         </div>
     );
 };

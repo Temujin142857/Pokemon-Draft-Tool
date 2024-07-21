@@ -13,6 +13,7 @@ import {set} from "firebase/database";
 import AbilitySelect from "../Components/AbilitySelect";
 import {calculateDamage} from "../Composables/useDamage";
 import {SiPokemon} from "react-icons/si";
+import Header from "../Components/Header";
 
 
 const SelectedMatchup = () => {
@@ -191,10 +192,15 @@ const SelectedMatchup = () => {
         }
     }
 
+    const navBarBehaviour=[
+        ()=>{},
+
+    ];
 
 
     return (
         <div>
+            <Header navBarBehavior={navBarBehaviour}></Header>
             {userRoster.species && (
                 <div style={{
                     backgroundColor: '#302B2B',

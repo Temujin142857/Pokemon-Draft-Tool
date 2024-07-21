@@ -3,6 +3,7 @@ import { loadTeams } from "../Composables/useDatabase.js"
 import {Link} from 'react-router-dom'
 import "../CSS/CreateRoster.css"
 import {Specie} from "../DataStructures/Specie";
+import Header from "../Components/Header";
 
 class CreateRoster extends React.Component {
 
@@ -63,7 +64,8 @@ class CreateRoster extends React.Component {
     render() {
         const { emptySlots, speciesSelected, species, slotSelected, searchInput, filteredSpecies } = this.state;
         return (
-            <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingTop: '20px', paddingBottom: '20px'}}>
+            <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingBottom: '20px'}}>
+                <Header></Header>
                 <div style={{textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'flex-start'}}>
                     <div style={{padding: '3px', border: '2px solid white', borderRadius: '10px', backgroundColor: '#302B2B', textAlign: 'center', maxHeight: '90vh', minWidth: '25vw'}}>
                         <h2 className={'text'}>Choose Pokemon</h2>
