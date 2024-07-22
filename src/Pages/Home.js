@@ -487,7 +487,7 @@ class Home extends React.Component {
                    ))}
                </ul>
                <h2 className={'text link'} onClick={this.goToSocial}>
-                   {text["social"]}
+                   {text["socialTab"]}
                </h2>
                {navigate && <NavigateForwards data={data} path={path} />}
            </div>
