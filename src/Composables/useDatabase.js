@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import { createPokemonFromSnapshot } from "../DataStructures/Pokemon.js"
-import { createSpeciesFromSnapshot } from "../DataStructures/Specie.js";
+import {createSpeciesFromSnapshot, Specie} from "../DataStructures/Specie.js";
 import { createMoveFromSnapshot } from "../DataStructures/Move.js"
 import { createTeamsFromSnapshot } from "../DataStructures/Team.js"
 
@@ -39,11 +39,16 @@ function writeUserData(userId, name, email, imageUrl) {
 
 
 function readData(path){
-    const dataRef = ref(useDatabase, path);
-    onValue(dataRef, (snapshot) => {
-        const data = snapshot.val();
-        return data;
+    return new Promise((resolve, reject) => {
+        const dataRef = ref(useDatabase, path);
+        onValue(dataRef, (snapshot) => {
+            const data = snapshot.val();
+            resolve(data);  // Resolve the Promise with the data
+        }, (error) => {
+            reject(error);  // Reject the Promise if there's an error
+        });
     });
+
 }
 
 export function loadAPokemon(pokemonId, user="default"){
@@ -56,8 +61,15 @@ export function loadASpecies(speciesName){
     return createSpeciesFromSnapshot(data);
 }
 
-export function loadAllSpecies(){
-    const data=readData("species/");
+export async function loadAllSpecies() {
+    try {
+        const data = await readData("names");
+        console.log("data:" + data);
+        const speciesArray = data.split(",").map(s => new Specie(s));
+        return speciesArray;  // Return the array of Specie objects
+    } catch (error) {
+        console.error("Error loading species:", error);
+    }
 }
 
 export function loadAMove(moveName){
@@ -68,4 +80,17 @@ export function loadAMove(moveName){
 export function loadTeams(){
     const data=readData("teams");
     return createTeamsFromSnapshot(data);
+}
+
+export function saveAPokemon(pokemon){
+
+}
+
+export function saveASpecies(speciesName){
+
+}
+
+export function uploadSpeciesList(){
+
+
 }

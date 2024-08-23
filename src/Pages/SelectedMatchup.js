@@ -12,7 +12,6 @@ import {NavigateForwards, NavigateBackwards} from "../Navigator";
 import {set} from "firebase/database";
 import AbilitySelect from "../Components/AbilitySelect";
 import {calculateDamage} from "../Composables/useDamage";
-import {SiPokemon} from "react-icons/si";
 import Header from "../Components/Header";
 
 

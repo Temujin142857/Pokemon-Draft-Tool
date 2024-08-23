@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import "../CSS/CreateRoster.css"
 import {Specie} from "../DataStructures/Specie";
 import Header from "../Components/Header";
+import {loadAllSpecies} from "../Composables/useDatabase.js";
 
 class CreateRoster extends React.Component {
 
@@ -13,38 +14,20 @@ class CreateRoster extends React.Component {
             slots: 12,
             speciesSelected: [],
             emptySlots: 0,
-            species: [
-                new Specie("Bulbasaur"),
-                new Specie("Charmander"),
-                new Specie("Squirtle"),
-                new Specie("Pikachu"),
-                new Specie("Jigglypuff"),
-                new Specie("Snorlax"),
-                new Specie("Eevee"),
-                new Specie("Mewtwo"),
-                new Specie("Gengar"),
-                new Specie("Dragonite"),
-                new Specie("Lucario"),
-                new Specie("Greninja"),
-                new Specie("Scizor"),
-                new Specie("Alakazam"),
-                new Specie("Machamp"),
-                new Specie("Gyarados"),
-                new Specie("Lapras"),
-                new Specie("Blaziken"),
-                new Specie("Charizard"),
-                new Specie("Garchomp")
-            ],
+            species: [],
             slotsSelected: [],
 
-            filteredSpecies: [],
+            filteredSpecies: [new Specie("temp")],
             searchInput: ''
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         loadTeams();
-        this.setState({ filteredSpecies: this.state.species });
+        const speciesL=  await loadAllSpecies();
+        console.log(speciesL);
+        this.setState({ filteredSpecies: speciesL });
+        this.setState({species: speciesL});
     }
 
     selectSlot=(specie)=>{
@@ -56,7 +39,7 @@ class CreateRoster extends React.Component {
     handleSearchInputChange = (event) => {
         const searchInput = event.target.value.toLowerCase();
         const filteredSpecies = this.state.species.filter(specie =>
-            specie.name.toLowerCase().includes(searchInput)||specie.type?.toLowerCase().includes(searchInput)
+            specie.name.toLowerCase().includes(searchInput)
         );
         this.setState({ searchInput, filteredSpecies });
     };
