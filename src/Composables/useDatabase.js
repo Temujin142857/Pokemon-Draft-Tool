@@ -92,5 +92,42 @@ export function saveASpecies(speciesName){
 
 export function uploadSpeciesList(){
 
+}
 
+export async function loadRosterPointer(){
+    try {
+        const data = await readData("rosterPointer");
+        console.log("rosterID: " + data);
+        return data;
+    } catch (error) {
+        console.error("Error loading species:", error);
+    }
+}
+
+export async function incrementRosterPointer(currentValue){
+    await set(ref(useDatabase, 'rosterPointer'), ++currentValue);
+}
+
+
+//add a reference to the roster in the user's profile
+export async function saveRoster(roster){
+    if(!roster.rosterID){
+        await generateRosterID(roster);
+    }
+    await set(ref(useDatabase, 'rosters/' + roster.rosterID), roster);
+}
+
+export async function generateRosterID(roster){
+    roster.rosterID=loadRosterPointer();
+    await incrementRosterPointer(roster.rosterID);
+}
+
+export async function loadRoster(rosterID){
+    try {
+        const data = await readData("rosters/"+rosterID);
+        console.log("rosterLoaded: " + data);
+        return data;
+    } catch (error) {
+        console.error("Error loading species:", error);
+    }
 }

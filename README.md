@@ -68,3 +68,10 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+### Database structure
+Names holds all the pokemon names and sits in the root
+Rosters holds all the saved rosters, each one has only specie names not data, same with the pkm in it
+UserAccount is primarily to store which rosters people have access too
+Teams hold more than 6 pokemon, it's all relavent pkm
