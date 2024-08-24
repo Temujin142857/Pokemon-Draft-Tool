@@ -5,6 +5,8 @@ import "../CSS/CreateRoster.css"
 import {Specie} from "../DataStructures/Specie";
 import Header from "../Components/Header";
 import {loadAllSpecies} from "../Composables/useDatabase.js";
+import {saveARoster} from "../Composables/useRosters";
+import {Roster} from "../DataStructures/Roster";
 
 class CreateRoster extends React.Component {
 
@@ -16,7 +18,7 @@ class CreateRoster extends React.Component {
             emptySlots: 0,
             species: [],
             slotsSelected: [],
-
+            name: "Roster Name",
             filteredSpecies: [new Specie("temp")],
             searchInput: ''
         }
@@ -44,6 +46,14 @@ class CreateRoster extends React.Component {
         this.setState({ searchInput, filteredSpecies });
     };
 
+    saveRoster = () =>{
+        saveARoster(new Roster(this.state.name, this.state.speciesSelected));
+    }
+
+    handleInput = (e) => {
+        this.setState({name: e.target.value});
+    }
+
     render() {
         const { emptySlots, speciesSelected, species, slotSelected, searchInput, filteredSpecies } = this.state;
         return (
@@ -70,7 +80,7 @@ class CreateRoster extends React.Component {
                         </ul>
                     </div>
                     <div style={{marginLeft: "80px", minWidth: '25vw'}}>
-                        <h2  contentEditable={"true"} className={'text'}>Roster Name</h2>
+                        <h2 contentEditable={true} className='text' onInput={this.handleInput} suppressContentEditableWarning={true}> {"Roster Name"} </h2>
                         <ul style={{margin: '50px 0', display: 'grid', gridTemplateColumns: 'auto auto', gap: '20px'}}>
                             {speciesSelected && speciesSelected.map((specie, index) => (
                                 <li key={index} className={'li'} style={{margin: '20px 0'}}>
@@ -80,8 +90,11 @@ class CreateRoster extends React.Component {
                         </ul>
                     </div>
                 </div>
-                <Link to="/" className={'link'}
-                      style={{display: 'block', marginTop: '20px', color: 'white', textDecoration: 'none', fontSize: '24px'}}>Save</Link>
+                <div onClick={this.saveRoster}>
+                    <Link to="/" className={'link'}
+                          style={{display: 'block', marginTop: '20px', color: 'white', textDecoration: 'none', fontSize: '24px'}}>Save</Link>
+                </div>
+
             </div>
 
         );

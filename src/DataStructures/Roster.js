@@ -20,6 +20,7 @@ export class Roster{
 
     toJSON() {
         return {
+            rosterID: this.rosterID,
             name: this.name,
             species: this.species,
             teams: this.teams.map(team => team.toJSON())
@@ -28,7 +29,6 @@ export class Roster{
 
     static fromJSON(json) {
         const teams = json.teams.map(teamJson => Team.fromJSON(teamJson));
-        console.log(teams);
         return new Roster(json.name, json.species, teams);
     }
 }

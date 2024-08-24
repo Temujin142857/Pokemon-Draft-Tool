@@ -29,9 +29,10 @@ export class Team{
         this.pokemons = this.pokemons.filter(pokemon => pokemon1.specie.name !== pokemon.specie.name);
     }
     toJSON() {
+
         return {
             name: this.name,
-            pokemons: this.pokemons.map(pokemon => pokemon.toJSON())
+            pokemons: this.pokemons.map(pokemon => (pokemon instanceof Pokemon) ? pokemon.toJSON() : pokemon)
         };
     }
 

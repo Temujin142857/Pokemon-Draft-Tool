@@ -1,3 +1,5 @@
+import {Specie} from "./Specie";
+
 export class Pokemon{
     constructor(specie=null, nature='Serious', moves=[], evs=[0,0,0,0,0,0], ivs=[31,31,31,31,31,31], ability=null, item=null, level=100){
         this.specie = specie
@@ -10,7 +12,8 @@ export class Pokemon{
         this.stats=[]
         this.level=level
         this.natureNums=[1,1,1,1,1,1]
-        if(specie){
+        if(this.specie instanceof Specie && this.specie.baseStats){
+            console.log(specie)
             for (let i = 0; i < 6; i++) {
                 this.recalculateStat(i);
             }

@@ -30,21 +30,29 @@ export const createRosterFromSnapshot = async (snapshot) => {
     );
 
     let teams = snapshot.teams;
-    for (let pkm of team) {
-        pkm.specie = species.find((s) => s.name === pkm.specie);
+    for (let team of teams) {
+        for (let pkm of team) {
+            pkm.specie = species.find((s) => s.name === pkm.specie);
+        }
     }
 
-    return new Roster(name, species, team);
+    return new Roster(name, species, teams);
 }
 
 export const saveARoster=(roster)=>{
+    console.log("roster:", roster);
     for (let i=0; i<roster.species.length; i++){
         saveASpecies(roster.species[i]);
         roster.species[i] = roster.species[i].name;
     }
     for (let i=0; i<roster.teams.length; i++){
         for (let j = 0; j < roster.teams[i].pokemons.length; j++) {
-            roster.teams[i].pokemons[j]=roster.teams[i].pokemons[i].specie.name
+            if(roster.teams[i].pokemons[j].specie.name){
+                roster.teams[i].pokemons[j]=roster.teams[i].pokemons[j].specie.name
+            }else {
+                roster.teams[i].pokemons[j]=roster.teams[i].pokemons[j].specie
+            }
+
         }
     }
     saveRoster(roster);

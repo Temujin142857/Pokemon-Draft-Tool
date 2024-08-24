@@ -114,11 +114,12 @@ export async function saveRoster(roster){
     if(!roster.rosterID){
         await generateRosterID(roster);
     }
-    await set(ref(useDatabase, 'rosters/' + roster.rosterID), roster);
+    console.log("saving roster: ", roster);
+    await set(ref(useDatabase, 'rosters/' + roster.rosterID), roster.toJSON());
 }
 
 export async function generateRosterID(roster){
-    roster.rosterID=loadRosterPointer();
+    roster.rosterID= await loadRosterPointer();
     await incrementRosterPointer(roster.rosterID);
 }
 
