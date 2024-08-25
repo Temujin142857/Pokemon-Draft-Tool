@@ -20,7 +20,8 @@ class CreateRoster extends React.Component {
             slotsSelected: [],
             name: "Roster Name",
             filteredSpecies: [new Specie("temp")],
-            searchInput: ''
+            searchInput: '',
+            roster: new Roster()
         }
     }
 
@@ -46,16 +47,17 @@ class CreateRoster extends React.Component {
         this.setState({ searchInput, filteredSpecies });
     };
 
-    saveRoster = () =>{
-        saveARoster(new Roster(this.state.name, this.state.speciesSelected));
-    }
+    saveRoster = () => {
+      const newRoster = new Roster(this.state.name, this.state.speciesSelected);
+      saveARoster(newRoster);
+    };
 
     handleInput = (e) => {
         this.setState({name: e.target.value});
     }
 
     render() {
-        const { emptySlots, speciesSelected, species, slotSelected, searchInput, filteredSpecies } = this.state;
+        const { emptySlots, speciesSelected, species, slotSelected, searchInput, filteredSpecies, roster } = this.state;
         return (
             <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingBottom: '20px'}}>
                 <Header></Header>
@@ -91,7 +93,7 @@ class CreateRoster extends React.Component {
                     </div>
                 </div>
                 <div onClick={this.saveRoster}>
-                    <Link to="/" className={'link'}
+                    <Link to= "/" state= {new Roster(this.state.name, this.state.speciesSelected).toJSON()} className={'link'}
                           style={{display: 'block', marginTop: '20px', color: 'white', textDecoration: 'none', fontSize: '24px'}}>Save</Link>
                 </div>
 

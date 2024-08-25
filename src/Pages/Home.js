@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 //import { loadrosters } from "../Composables/useDatabase.js"
-import {Link} from 'react-router-dom'
+import {Link, useLocation, useNavigate} from 'react-router-dom'
 //import { Rosters } from "../Composables/useRosters.js"
 import "../CSS/Home.css"
 import {Specie} from "../DataStructures/Specie";
@@ -397,103 +397,102 @@ const speciesList = [
 ];
 
 
-class Home extends React.Component {
+const Home = (props) => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const passedData = location.state;
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            slots: 12,
-            rostersSelected: [],
-            emptySlots: 0,
-            rosters: [
-                new Roster("Roster 1", speciesList.slice(0, 8)),
-                new Roster("Roster 2", speciesList.slice(2, 10)),
-                new Roster("Roster 3", speciesList.slice(4, 14)),
-                new Roster("Roster 4", speciesList.slice(6, 16)),
-                new Roster("Roster 5", speciesList.slice(8, 18)),
-                new Roster("Roster 6", speciesList.slice(10, 20))
-            ],
-            navigate: false,
-            path:'',
-            data:null,
-            text: {
-                homeHeader: "Welcome to DraftDex",
-                homeHeader2: "Select two rosters to begin comparing or create a new roster to add to the draft",
-                newRoster: "+ New Roster",
-                socialTab: "Social Tab"
-            }
+    const [slots, setSlots] = useState(12);
+    const [rostersSelected, setRostersSelected] = useState([]);
+    const [emptySlots, setEmptySlots] = useState(0);
+    const [rosters, setRosters] = useState([
+        new Roster("Roster 1", speciesList.slice(0, 8)),
+        new Roster("Roster 2", speciesList.slice(2, 10)),
+        new Roster("Roster 3", speciesList.slice(4, 14)),
+        new Roster("Roster 4", speciesList.slice(6, 16)),
+        new Roster("Roster 5", speciesList.slice(8, 18)),
+        new Roster("Roster 6", speciesList.slice(10, 20))
+    ]);
+    const [shouldNavigate, setShouldNavigate] = useState(false);
+    const [path, setPath] = useState('');
+    const [text, setText] = useState({
+        homeHeader: "Welcome to DraftDex",
+        homeHeader2: "Select two rosters to begin comparing or create a new roster to add to the draft",
+        newRoster: "+ New Roster",
+        socialTab: "Social Tab"
+    });
+    const [newRoster, setNewRoster] = useState(Roster.fromJSON(passedData));
+    const [data, setData]=useState([])
+
+    useEffect(() => {
+        console.log(newRoster)
+        const newRosters = [...rosters];  // Create a copy of the rosters array
+
+        if (newRoster) {
+            newRosters.push(newRoster);  // Add the new roster if it exists
         }
-    }
+        console.log(newRosters);
 
-    componentDidMount() {
-        //loadrosters();
-        this.setState({
-            emptySlots: this.state.slots - (this.state.rosters ? this.state.rosters.length : 0)
-        });
-        console.log('hi')
-    }
+        setEmptySlots(slots - newRosters.length);
+        setRosters(newRosters);
 
-    selectRoster = (roster) => {
-        this.setState((prevState) => {
-            let newRostersSelected;
-            if (prevState.rostersSelected.includes(roster)) {
-                newRostersSelected = prevState.rostersSelected.filter(r => r !== roster);
-            } else {
-                newRostersSelected = [...prevState.rostersSelected, roster];
-            }
-            if (newRostersSelected.length === 2) {
-                console.log("Navigating to selected matchup with roster: ", newRostersSelected);
-                const data={userRoster: newRostersSelected[0].toJSON(), enemyRoster: newRostersSelected[1].toJSON()};
-                return { data: data, navigate: true, path: '/selectedMatchup' };
-            }
-            return { rostersSelected: newRostersSelected };
-        });
-    }
+        console.log("new roster", newRoster);
+    }, []);
 
-    goToSocial = () =>{
-        this.setState((prevState) => {
-            return { data: {}, navigate: true, path: '/social' };
-        });
-    }
+    const selectRoster = (roster) => {
+        let newRostersSelected;
+        if (rostersSelected.includes(roster)) {
+            newRostersSelected = rostersSelected.filter(r => r !== roster);
+        } else {
+            newRostersSelected = [...rostersSelected, roster];
+        }
 
-    languageSwap = () =>{
-        this.setState((prevState) => {return {text: swapLNG(prevState.text)}})
+        if (newRostersSelected.length === 2) {
+            console.log("Navigating to selected matchup with roster: ", newRostersSelected);
+            setData({ userRoster: newRostersSelected[0].toJSON(), enemyRoster: newRostersSelected[1].toJSON() });
+            setShouldNavigate(true);
+            setPath('/selectedMatchup');
+            // Assuming there's some navigation logic here
+        }
 
-    }
+        setRostersSelected(newRostersSelected);
+    };
 
+    const goToSocial = () => {
+        setShouldNavigate(true);
+        setPath('/social');
+    };
 
-    render() {
-       const { emptySlots, rostersSelected, rosters, navigate, path, data, text } = this.state;
-       return (
-           <div style={{backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingBottom: '20px'}}>
-               <Header reboot={this.languageSwap}></Header>
-               <h1 className={'text'}>{text["homeHeader"]}</h1>
-               <h3 className={'text'}>
-                   {text['homeHeader2']}
-               </h3>
-               <ul style={{columns: '3', marginTop: '5%'}}>
-                   {rosters && rosters.map((roster, index) =>
-                       <li className={rostersSelected.includes(roster) ? 'lii highlighted' : 'lii'}
-                       onClick={() => {
-                           this.selectRoster(roster);
-                       }} key={index}>
-                           {roster.name}
-                       </li>
-                   )}
-                   {Array.from(Array(emptySlots)).map((_, index) => (
-                       <li className='lii' key={index}>
-                           <Link to="/createRoster" className={'link'}>{text["newRoster"]}</Link>
-                       </li>
-                   ))}
-               </ul>
-               <h2 className={'text link'} onClick={this.goToSocial}>
-                   {text["socialTab"]}
-               </h2>
-               {navigate && <NavigateForwards data={data} path={path} />}
-           </div>
-       );
-    }
-}
+    const languageSwap = () => {
+        setText(prevText => swapLNG(prevText));
+    };
 
+    return (
+        <div style={{ backgroundColor: '#302B2B', textAlign: 'center', minHeight: '100vh', paddingBottom: '20px' }}>
+            <Header reboot={languageSwap} />
+            <h1 className='text'>{text["homeHeader"]}</h1>
+            <h3 className='text'>
+                {text['homeHeader2']}
+            </h3>
+            <ul style={{ columns: '3', marginTop: '5%' }}>
+                {rosters && rosters.map((roster, index) =>
+                    <li className={rostersSelected.includes(roster) ? 'lii highlighted' : 'lii'}
+                        onClick={() => selectRoster(roster)} key={index}>
+                        {roster.name}
+                    </li>
+                )}
+                {Array.from(Array(emptySlots)).map((_, index) => (
+                    <li className='lii' key={index}>
+                        <Link to="/createRoster" className='link'>{text["newRoster"]}</Link>
+                    </li>
+                ))}
+            </ul>
+            <h2 className='text link' onClick={goToSocial}>
+                {text["socialTab"]}
+            </h2>
+            {shouldNavigate && <NavigateForwards data={data} path={path} />}
+        </div>
+    );
+};
 
 export default Home;

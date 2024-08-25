@@ -75,3 +75,8 @@ Names holds all the pokemon names and sits in the root
 Rosters holds all the saved rosters, each one has only specie names not data, same with the pkm in it
 UserAccount is primarily to store which rosters people have access too
 Teams hold more than 6 pokemon, it's all relavent pkm
+
+### Next steps
+At the start of the selected matchup check the cache for the species, if not try to read the species from the database
+If all fail read it from the api, save it in the cache and the database
+During that process load all the moves too
