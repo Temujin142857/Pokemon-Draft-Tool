@@ -10,9 +10,3 @@ export class Specie {
     }
 }
 
-export function createSpeciesFromSnapshot(snapshot){
-    //check which moves are already loaded into memory
-    //Load the ones that need to be loaded
-    //load the sprite and ability
-    return null;
-}

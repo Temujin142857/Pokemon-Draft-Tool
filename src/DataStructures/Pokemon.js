@@ -13,7 +13,7 @@ export class Pokemon{
         this.level=level
         this.natureNums=[1,1,1,1,1,1]
         if(this.specie instanceof Specie && this.specie.baseStats){
-            console.log(specie)
+            //console.log(specie)
             for (let i = 0; i < 6; i++) {
                 this.recalculateStat(i);
             }

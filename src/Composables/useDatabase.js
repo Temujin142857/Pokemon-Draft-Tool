@@ -2,9 +2,10 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import { createPokemonFromSnapshot } from "../DataStructures/Pokemon.js"
-import {createSpeciesFromSnapshot, Specie} from "../DataStructures/Specie.js";
+import {Specie} from "../DataStructures/Specie.js";
 import { createMoveFromSnapshot } from "../DataStructures/Move.js"
 import { createTeamsFromSnapshot } from "../DataStructures/Team.js"
+
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -56,9 +57,9 @@ export function loadAPokemon(pokemonId, user="default"){
     return createPokemonFromSnapshot(data);
 }
 
-export function loadASpecies(speciesName){
+export function loadSpecie(speciesName){
     const data=readData("species/"+speciesName);
-    return createSpeciesFromSnapshot(data);
+    return createSpecieFromJson(data);
 }
 
 export async function loadAllSpecies() {
@@ -72,7 +73,7 @@ export async function loadAllSpecies() {
     }
 }
 
-export function loadAMove(moveName){
+export function loadMove(moveName){
     const data=readData("moves/"+moveName);
     return createMoveFromSnapshot(data);
 }
@@ -86,7 +87,7 @@ export function saveAPokemon(pokemon){
 
 }
 
-export function saveASpecies(speciesName){
+export async function saveSpecie(speciesName){
 
 }
 
@@ -131,4 +132,21 @@ export async function loadRoster(rosterID){
     } catch (error) {
         console.error("Error loading species:", error);
     }
+}
+
+export async function loadUserRosters(user){
+    try {
+        let rosters=[];
+        const data = await readData("users/"+user.id);
+        for (const rosterID in data.split(',')) {
+            rosters.push(await loadRoster(rosterID));
+        }
+    }catch (error) {
+        console.error("Error loading userData:", error);
+    }
+
+}
+
+const createSpecieFromJson = (json) => {
+    return new Specie(json.name, json.baseStats, json.moves, json.types, json.id, json.abilities);
 }

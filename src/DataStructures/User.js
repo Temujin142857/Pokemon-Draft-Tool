@@ -1,6 +1,6 @@
-class User{
-    constructor(name, password){
+export class User{
+    constructor(name, rosters){
         this.name = name;
-        this.password = password;
+        this.rosters = rosters;
     }
 }

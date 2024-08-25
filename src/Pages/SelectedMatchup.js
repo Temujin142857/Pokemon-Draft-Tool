@@ -13,6 +13,8 @@ import {set} from "firebase/database";
 import AbilitySelect from "../Components/AbilitySelect";
 import {calculateDamage} from "../Composables/useDamage";
 import Header from "../Components/Header";
+import {loadRoster} from "../Composables/useDatabase";
+import {loadARoster} from "../Composables/useRosters";
 
 
 const SelectedMatchup = () => {
@@ -49,6 +51,9 @@ const SelectedMatchup = () => {
     useEffect(() => {
         const initialUserRoster = state && state.data  ? Roster.fromJSON(state.data.userRoster) : [];
         const initialEnemyRoster = state && state.data ? Roster.fromJSON(state.data.enemyRoster) : [];
+
+        const fullUserRoster=loadARoster(initialUserRoster.rosterID);
+        const fullEnemyRoster=loadARoster(initialEnemyRoster.rosterID);
 
         setUserRoster(initialUserRoster);
         setEnemyRoster(initialEnemyRoster);

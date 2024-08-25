@@ -11,8 +11,6 @@ export async function fetchSpecies(name) {
         // Parse the response as JSON
         const data = await response.json();
 
-        // Log or work with the data
-        console.log(data);
         return data;
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);

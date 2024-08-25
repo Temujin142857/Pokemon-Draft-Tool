@@ -1,6 +1,7 @@
 import { createTeam } from './useTeams.js';
-import {loadASpecies, loadRoster, saveASpecies, saveRoster} from "./useDatabase";
+import { loadRoster, saveSpecie, saveRoster} from "./useDatabase";
 import {Roster} from "../DataStructures/Roster";
+import {loadASpecie} from "./useSpecies";
 
 export const createRoster = (name, species=[], team=null) => {
     if (!team && species.length > 6) {
@@ -26,7 +27,7 @@ export const createRosterFromSnapshot = async (snapshot) => {
 
     // Use Promise.all to resolve all Promises in the species array
     let species = await Promise.all(
-        speciesList.map(speciesName => loadASpecies(speciesName))
+        speciesList.map(speciesName => loadASpecie(speciesName))
     );
 
     let teams = snapshot.teams;
@@ -42,7 +43,7 @@ export const createRosterFromSnapshot = async (snapshot) => {
 export const saveARoster=(roster)=>{
     console.log("roster:", roster);
     for (let i=0; i<roster.species.length; i++){
-        saveASpecies(roster.species[i]);
+        saveSpecie(roster.species[i]);
         roster.species[i] = roster.species[i].name;
     }
     for (let i=0; i<roster.teams.length; i++){

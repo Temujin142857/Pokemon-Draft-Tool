@@ -28,7 +28,8 @@ export class Roster{
     }
 
     static fromJSON(json) {
-        const teams = json.teams.map(teamJson => Team.fromJSON(teamJson));
+        if(!json){return null}
+        const teams = json?.teams.map(teamJson => Team.fromJSON(teamJson));
         return new Roster(json.name, json.species, teams);
     }
 }
