@@ -1,3 +1,5 @@
+import {Team} from "../DataStructures/Team";
+
 export const createTeam = (name = '', initialPokemons = []) => {
     let pokemons = [...initialPokemons]; // Create a new array
 
@@ -23,7 +25,7 @@ export const createTeam = (name = '', initialPokemons = []) => {
     };
 };
 
-export const createTeamsFromSnapshot = (snapshot) => {
-    // Implement logic to create teams from a snapshot
+export const createTeamFromSnapshot = (snapshot) => {
+    return new Team(snapshot.name, snapshot.pokemons);
 };
 

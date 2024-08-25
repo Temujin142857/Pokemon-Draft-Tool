@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-//import { loadrosters } from "../Composables/useDatabase.js"
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 //import { Rosters } from "../Composables/useRosters.js"
 import "../CSS/Home.css"
@@ -13,8 +12,9 @@ import Header from "../Components/Header";
 import {getL, swapLNG} from "../Composables/useLexicon";
 import {User} from "../DataStructures/User";
 import {loadUserRosters} from "../Composables/useDatabase";
+import {loadRostersFromUser} from "../Composables/useRosters";
 
-const defaultUser=new User("Ash", "1,2,3,4,5,6");
+const defaultUser=new User("Ash");
 
 const Home = (props) => {
     const location = useLocation();
@@ -24,7 +24,7 @@ const Home = (props) => {
     const [slots, setSlots] = useState(12);
     const [rostersSelected, setRostersSelected] = useState([]);
     const [emptySlots, setEmptySlots] = useState(0);
-    const [rosters, setRosters] = useState([]);
+    const [rosters, setRosters] = useState([new Roster('name', 'pikachu')]);
     const [shouldNavigate, setShouldNavigate] = useState(false);
     const [path, setPath] = useState('');
     const [text, setText] = useState({
@@ -37,18 +37,23 @@ const Home = (props) => {
     const [data, setData]=useState([])
 
     useEffect(() => {
-        console.log(newRoster)
-        const newRosters = loadUserRosters(defaultUser);  // Create a copy of the rosters array
+        const setupData = async () => {
+            try {
+                console.log(newRoster);
+                const newRosters = await loadRostersFromUser(defaultUser);
 
-        if (newRoster) {
-            newRosters.push(newRoster);  // Add the new roster if it exists
-        }
-        console.log(newRosters);
+                const resolvedRosters = await Promise.all(newRosters);
 
-        setEmptySlots(slots - newRosters.length);
-        setRosters(newRosters);
+                setRosters(resolvedRosters);
+                setEmptySlots(slots - resolvedRosters.length);
 
-        console.log("new roster", newRoster);
+                console.log("Rosters:", resolvedRosters);
+            } catch (error) {
+                console.error('Error loading rosters:', error);
+            }
+        };
+
+        setupData(); // Call the async function
     }, []);
 
     const selectRoster = (roster) => {
@@ -87,7 +92,7 @@ const Home = (props) => {
                 {text['homeHeader2']}
             </h3>
             <ul style={{ columns: '3', marginTop: '5%' }}>
-                {rosters && rosters.map((roster, index) =>
+                {rosters && rosters?.map((roster, index) =>
                     <li className={rostersSelected.includes(roster) ? 'lii highlighted' : 'lii'}
                         onClick={() => selectRoster(roster)} key={index}>
                         {roster.name}

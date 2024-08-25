@@ -25,8 +25,8 @@ const SelectedMatchup = () => {
     const [navigate, setNavigate] = useState(false);
     const [data, setData] = useState(null);
     const [path, setPath] = useState('');
-    const [userRoster, setUserRoster] = useState([]);
-    const [enemyRoster, setEnemyRoster] = useState([]);
+    const [userRoster, setUserRoster] = useState(null);
+    const [enemyRoster, setEnemyRoster] = useState(null);
     const [selectedUserPokemon, setSelectedUserPokemon] = useState(null);
     const [selectedEnemyPokemon, setSelectedEnemyPokemon] = useState(null);
 
@@ -48,23 +48,34 @@ const SelectedMatchup = () => {
         //setSelectedNatures(selectedOptions);
     };
 
-    useEffect(() => {
-        const initialUserRoster = state && state.data  ? Roster.fromJSON(state.data.userRoster) : [];
-        const initialEnemyRoster = state && state.data ? Roster.fromJSON(state.data.enemyRoster) : [];
+    useEffect(()=>{
+    const fetchRosters = async () => {
+        try {
+            const initialUserRoster = state && state.data ? Roster.fromJSON(state.data.userRoster) : [];
+            const initialEnemyRoster = state && state.data ? Roster.fromJSON(state.data.enemyRoster) : [];
 
-        const fullUserRoster=loadARoster(initialUserRoster.rosterID);
-        const fullEnemyRoster=loadARoster(initialEnemyRoster.rosterID);
+            console.log("data in matchup", state)
+            console.log("inital user: ", initialUserRoster);
 
-        setUserRoster(initialUserRoster);
-        setEnemyRoster(initialEnemyRoster);
+            const fullUserRoster = await loadARoster(initialUserRoster.rosterID);
+            const fullEnemyRoster = await loadARoster(initialEnemyRoster.rosterID);
 
-        if (initialUserRoster.teams.length > 0 && initialUserRoster.teams[0].pokemons.length > 0) {
-            setSelectedUserPokemon(initialUserRoster.teams[0].pokemons[0]);
+            setUserRoster(fullUserRoster);
+            setEnemyRoster(fullEnemyRoster);
+
+            if (fullUserRoster.teams.length > 0 && fullUserRoster.teams[0].pokemons.length > 0) {
+                setSelectedUserPokemon(fullUserRoster.teams[0].pokemons[0]);
+            }
+            if (fullEnemyRoster.teams.length > 0 && fullEnemyRoster.teams[0].pokemons.length > 0) {
+                setSelectedEnemyPokemon(fullEnemyRoster.teams[0].pokemons[0]);
+            }
+        } catch (error) {
+            console.error('Error loading rosters:', error);
         }
-        if (initialEnemyRoster.teams.length > 0 && initialEnemyRoster.teams[0].pokemons.length > 0) {
-            setSelectedEnemyPokemon(initialEnemyRoster.teams[0].pokemons[0]);
-        }
-    }, [state]);
+    };
+
+    fetchRosters();
+}, []);
 
     const handleIVChange = (user, index, iv, event) => {
         if(user){
@@ -207,7 +218,7 @@ const SelectedMatchup = () => {
     return (
         <div>
             <Header navBarBehaviour={navBarBehaviourM}></Header>
-            {userRoster.species && (
+            {userRoster && userRoster.species && (
                 <div style={{
                     backgroundColor: '#302B2B',
                     textAlign: 'center',
@@ -215,7 +226,11 @@ const SelectedMatchup = () => {
                     minWidth: '100vw', paddingTop: '10px', paddingBottom: '20px'}}>
                     <div style={{textAlign: 'center', display: 'flex'}}>
                         <div>
-                            <h2 className={'text'} style={{marginLeft: '40px'}}>{userRoster.name}</h2>
+                            {userRoster &&  (
+                                <h2 className={'text'} style={{marginLeft: '40px'}}>
+                                    {userRoster.name}
+                                </h2>
+                            )}
                             <ul>
                                 {userRoster && userRoster.species?.map((specie, index) =>
                                     <li key={index} className={'liii nameList'}  onClick={() => {
@@ -231,7 +246,8 @@ const SelectedMatchup = () => {
 
 
                         <div style={{textAlign: 'center'}}>
-                            <h2 className={'text'} style={{marginLeft: '40px'}}>{userRoster.teams[0].name}</h2>
+                            {userRoster && userRoster.teams.length > 0 && (
+                            <h2 className={'text'} style={{marginLeft: '40px'}}>{userRoster.teams[0].name}</h2>)}
                             <ul>
                                 {userRoster && userRoster.teams[0].pokemons.map((pokemon, index) =>
                                     <li key={index}

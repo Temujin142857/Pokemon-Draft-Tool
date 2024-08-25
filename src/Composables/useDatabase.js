@@ -87,8 +87,9 @@ export function saveAPokemon(pokemon){
 
 }
 
-export async function saveSpecie(speciesName){
-
+export async function saveSpecie(specie){
+    console.log("saving specie: ", specie);
+    await set(ref(useDatabase, 'species/' + specie.name), specie);
 }
 
 export function uploadSpeciesList(){
@@ -121,13 +122,14 @@ export async function saveRoster(roster){
 
 export async function generateRosterID(roster){
     roster.rosterID= await loadRosterPointer();
+    if(!roster.rosterID){roster.rosterID=0;}
     await incrementRosterPointer(roster.rosterID);
 }
 
 export async function loadRoster(rosterID){
     try {
         const data = await readData("rosters/"+rosterID);
-        console.log("rosterLoaded: " + data);
+        console.log("rosterLoaded: " , data);
         return data;
     } catch (error) {
         console.error("Error loading species:", error);
@@ -137,10 +139,12 @@ export async function loadRoster(rosterID){
 export async function loadUserRosters(user){
     try {
         let rosters=[];
-        const data = await readData("users/"+user.id);
+        const data = await readData("users/"+user.name);
+        console.log("data:", data, user);
         for (const rosterID in data.split(',')) {
             rosters.push(await loadRoster(rosterID));
         }
+        return rosters;
     }catch (error) {
         console.error("Error loading userData:", error);
     }

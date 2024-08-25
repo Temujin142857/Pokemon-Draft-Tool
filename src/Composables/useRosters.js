@@ -1,7 +1,8 @@
-import { createTeam } from './useTeams.js';
-import { loadRoster, saveSpecie, saveRoster} from "./useDatabase";
+import {createTeam, createTeamFromSnapshot} from './useTeams.js';
+import {loadRoster, saveSpecie, saveRoster, loadUserRosters} from "./useDatabase";
 import {Roster} from "../DataStructures/Roster";
 import {loadASpecie} from "./useSpecies";
+import {Pokemon} from "../DataStructures/Pokemon";
 
 export const createRoster = (name, species=[], team=null) => {
     if (!team && species.length > 6) {
@@ -17,33 +18,67 @@ export const createRoster = (name, species=[], team=null) => {
     };
 };
 
-export const loadARoster=(rosterID)=>{
-    return createRosterFromSnapshot(loadRoster(rosterID));
+export const loadARoster=async (rosterID) => {
+    return createRosterFromSnapshot(await loadRoster(rosterID));
 }
+
+export const loadRostersFromUser = async (user) => {
+    const rawRosters=await loadUserRosters(user);
+    let rosters=[];
+    for(const roster of rawRosters){
+        if(!roster)continue;
+        rosters.push(createShallowRosterFromSnapshot(roster));
+    }
+    return rosters;
+}
+
+export const createShallowRosterFromSnapshot=(snapshot)=>{
+    let name = snapshot.name;
+    let id= snapshot.rosterID;
+    let speciesList = snapshot.speciesList || snapshot.species;
+    let teams=snapshot.teams;
+    for (let i=0;i< teams.length; i++) {
+        teams[i] = createTeamFromSnapshot(teams[i]);
+    }
+    console.log("shallow snapshot: ", snapshot);
+
+    return new Roster(name, speciesList, teams, id);
+}
+
 
 export const createRosterFromSnapshot = async (snapshot) => {
     let name = snapshot.name;
-    let speciesList = snapshot.speciesList;
+    let id= snapshot.rosterID;
+    let speciesList = snapshot.speciesList || snapshot.species;
+    console.log("snapshot: ", snapshot);
+    console.log("SpeciesList being loaded: ",speciesList)
 
-    // Use Promise.all to resolve all Promises in the species array
     let species = await Promise.all(
         speciesList.map(speciesName => loadASpecie(speciesName))
     );
 
     let teams = snapshot.teams;
-    for (let team of teams) {
-        for (let pkm of team) {
-            pkm.specie = species.find((s) => s.name === pkm.specie);
+
+    for (let i=0;i< teams.length; i++) {
+        teams[i] = createTeamFromSnapshot(teams[i]);
+        const team=teams[i];
+        for (let i=0; i< team.pokemons.length;i++) {
+            if(typeof team.pokemons[i] == "string"){
+                const specie=species.find((s) => s.name === team.pokemons[i])
+                team.pokemons[i]=new Pokemon(specie)
+            }else{
+                team.pokemons[i].specie = species.find((s) => s.name === team.pokemons[i].specie);
+            }
+
         }
     }
 
-    return new Roster(name, species, teams);
+    return new Roster(name, species, teams, id);
 }
 
 export const saveARoster=(roster)=>{
     console.log("roster:", roster);
     for (let i=0; i<roster.species.length; i++){
-        saveSpecie(roster.species[i]);
         roster.species[i] = roster.species[i].name;
     }
     for (let i=0; i<roster.teams.length; i++){

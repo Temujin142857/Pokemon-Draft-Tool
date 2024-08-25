@@ -14,11 +14,11 @@ export class Roster{
             }
             this.teams=[new Team('team1', pokemons)];
         }
-        console.log(this.teams)
     }
 
 
     toJSON() {
+        console.log("turning myslef into a json: ", this)
         return {
             rosterID: this.rosterID,
             name: this.name,
@@ -30,7 +30,7 @@ export class Roster{
     static fromJSON(json) {
         if(!json){return null}
         const teams = json?.teams.map(teamJson => Team.fromJSON(teamJson));
-        return new Roster(json.name, json.species, teams);
+        return new Roster(json.name, json.species, teams, json.rosterID);
     }
 }
 
