@@ -5,6 +5,8 @@ import { createPokemonFromSnapshot } from "../DataStructures/Pokemon.js"
 import {Specie} from "../DataStructures/Specie.js";
 import { createMoveFromSnapshot } from "../DataStructures/Move.js"
 import { createTeamsFromSnapshot } from "../DataStructures/Team.js"
+import {addRoster, setUser, user as gUser} from "./useUser(lol)";
+import {User} from "../DataStructures/User";
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -118,6 +120,9 @@ export async function saveRoster(roster){
     }
     console.log("saving roster: ", roster);
     await set(ref(useDatabase, 'rosters/' + roster.rosterID), roster.toJSON());
+    addRoster(roster.rosterID);
+    console.log(gUser)
+    await set(ref(useDatabase, 'users/'+gUser.name), gUser.rosters);
 }
 
 export async function generateRosterID(roster){
@@ -141,6 +146,7 @@ export async function loadUserRosters(user){
         let rosters=[];
         const data = await readData("users/"+user.name);
         console.log("data:", data, user);
+        setUser(new User(user.name, data));
         for (const rosterID in data.split(',')) {
             rosters.push(await loadRoster(rosterID));
         }

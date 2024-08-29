@@ -39,7 +39,7 @@ const Home = (props) => {
     useEffect(() => {
         const setupData = async () => {
             try {
-                console.log(newRoster);
+                console.log("loadingHome", newRoster);
                 const newRosters = await loadRostersFromUser(defaultUser);
 
                 const resolvedRosters = await Promise.all(newRosters);
@@ -71,7 +71,6 @@ const Home = (props) => {
             setPath('/selectedMatchup');
             // Assuming there's some navigation logic here
         }
-
         setRostersSelected(newRostersSelected);
     };
 

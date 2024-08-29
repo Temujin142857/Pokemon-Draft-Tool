@@ -22,7 +22,7 @@ const createSpecieFromAPI=async (json) => {
     let abilities = [];
     for (const ability of json.abilities) {
         const abilityData = await fetchGeneric(ability.ability.url);
-        abilities.push(new Ability(ability.ability.name, abilityData.effect_entries[1].effect));
+        abilities.push(new Ability(ability.ability.name, abilityData.effect_entries[abilityData.effect_entries.length-1].effect));
     }
     let learnSet = [];
     for (const move of json.moves) {

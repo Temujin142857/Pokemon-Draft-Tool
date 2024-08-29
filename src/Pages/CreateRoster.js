@@ -1,5 +1,5 @@
 import React from "react";
-import { loadTeams } from "../Composables/useDatabase.js"
+import {generateRosterID, loadTeams} from "../Composables/useDatabase.js"
 import {Link} from 'react-router-dom'
 import "../CSS/CreateRoster.css"
 import {Specie} from "../DataStructures/Specie";
@@ -21,21 +21,21 @@ class CreateRoster extends React.Component {
             name: "Roster Name",
             filteredSpecies: [new Specie("temp")],
             searchInput: '',
-            roster: new Roster()
+            roster: new Roster("name")
         }
     }
 
     async componentDidMount() {
         loadTeams();
         const speciesL=  await loadAllSpecies();
-        console.log(speciesL);
         this.setState({ filteredSpecies: speciesL });
         this.setState({species: speciesL});
     }
 
     selectSlot=(specie)=>{
         this.setState((prevState) => ({
-            speciesSelected: [...prevState.speciesSelected, specie]
+            speciesSelected: [...prevState.speciesSelected, specie],
+            roster: new Roster(prevState.name, [...prevState.speciesSelected, specie], prevState.roster.teams, prevState.roster.rosterID)
         }));
     }
 
@@ -47,13 +47,16 @@ class CreateRoster extends React.Component {
         this.setState({ searchInput, filteredSpecies });
     };
 
-    saveRoster = () => {
-      const newRoster = new Roster(this.state.name, this.state.speciesSelected);
-      saveARoster(newRoster);
+    saveRoster = async () => {
+      await generateRosterID(this.state.roster);
+      saveARoster(this.state.roster);
     };
 
     handleInput = (e) => {
-        this.setState({name: e.target.value});
+        console.log("name:", e.target.textContent)
+        this.setState((prevState) => ({
+            roster: new Roster(e.target.textContent, prevState.roster.species, prevState.roster.teams, prevState.roster.rosterID)
+        }));
     }
 
     render() {
@@ -93,7 +96,7 @@ class CreateRoster extends React.Component {
                     </div>
                 </div>
                 <div onClick={this.saveRoster}>
-                    <Link to= "/" state= {new Roster(this.state.name, this.state.speciesSelected).toJSON()} className={'link'}
+                    <Link to= "/" state= {roster.toJSON()} className={'link'}
                           style={{display: 'block', marginTop: '20px', color: 'white', textDecoration: 'none', fontSize: '24px'}}>Save</Link>
                 </div>
 

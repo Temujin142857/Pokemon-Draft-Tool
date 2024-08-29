@@ -15,6 +15,7 @@ import {calculateDamage} from "../Composables/useDamage";
 import Header from "../Components/Header";
 import {loadRoster} from "../Composables/useDatabase";
 import {loadARoster} from "../Composables/useRosters";
+import {Ability} from "../DataStructures/Ability";
 
 
 const SelectedMatchup = () => {
@@ -271,7 +272,7 @@ const SelectedMatchup = () => {
                                     <div style={{marginLeft: '10px'}}>
                                         <h4>Select Ability</h4>
                                         <AbilitySelect user={true}
-                                                       defaultAbility={selectedUserPokemon.specie.abilities[0]}
+                                                       defaultAbility={selectedUserPokemon.specie.abilities[0]||new Ability("default", "Something went wrong loading")}
                                                        abilities={selectedUserPokemon.specie.abilities}
                                                        onChange={handleNatureChange}/>
                                     </div>
@@ -369,7 +370,7 @@ const SelectedMatchup = () => {
                                     <div style={{marginLeft: '10px'}}>
                                         <h4>Select Ability</h4>
                                         <AbilitySelect user={false}
-                                                       defaultAbility={selectedEnemyPokemon.specie.abilities[0]}
+                                                       defaultAbility={selectedEnemyPokemon.specie.abilities[0]||new Ability("default", "Something went wrong loading")}
                                                        abilities={selectedEnemyPokemon.specie.abilities}
                                                        onChange={handleNatureChange}/>
                                     </div>
