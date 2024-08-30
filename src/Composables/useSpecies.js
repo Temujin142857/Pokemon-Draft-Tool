@@ -12,11 +12,12 @@ export const createSpecieFromJson = (json) => {
     return new Specie(json.name, null, json.stats, json.moves, json.types, json.id, json.abilities, json.weight);
 }
 
+export let globalSpeciesList={};
+
 const createSpecieFromAPI=async (json) => {
     if (!json) return null;
     let stats = [];
     for (const stat of json.stats) {
-        console.log("s: ", stat)
         stats.push(stat.base_stat);
     }
     let abilities = [];
@@ -35,12 +36,13 @@ const createSpecieFromAPI=async (json) => {
     return new Specie(json.name, null, stats, learnSet, types, json.id, abilities, json.weight);
 }
 export const loadASpecie = async (specieName) => {
-    let specie=getCachedData(specieName);
-    if(!specie?.name){
+    let specie= createSpecieFromJson(getCachedData(specieName));
+    if(!specie?.baseStats){
         specie=await createSpecieFromJson(await loadSpecie(specieName));
-        console.log("loaded species from database");
+    } else{
+        console.log("loaded species from cache", specie);
     }
-    if(!specie?.name){
+    if(!specie?.baseStats){
         specie= await createSpecieFromAPI(await fetchSpecies(specieName));
         console.log("loaded species from api");
         if(specie?.name){
@@ -51,7 +53,8 @@ export const loadASpecie = async (specieName) => {
     } else{
         cacheData(specieName, specie);
     }
-
-    console.log("loaded specie: ", specie)
+    if(specie?.name){
+        globalSpeciesList[specie.name]=specie;
+    }
     return specie;
 }

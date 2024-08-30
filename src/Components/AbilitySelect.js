@@ -10,7 +10,7 @@ const AbilitySelect = ({ user, defaultAbility, abilities, onChange }) => {
     };
 
     // Transform abilities into options with 'value' and 'label' properties
-    const options = abilities.map(ability => ({
+    const options = abilities?.map(ability => ({
         value: ability.name,  // Use name as the value
         label: ability.name   // Display name as the label
     }));

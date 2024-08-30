@@ -30,6 +30,7 @@ const SelectedMatchup = () => {
     const [enemyRoster, setEnemyRoster] = useState(null);
     const [selectedUserPokemon, setSelectedUserPokemon] = useState(null);
     const [selectedEnemyPokemon, setSelectedEnemyPokemon] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     const handleNatureChange = (user, selectedOption) => {
         // Assuming selectedUserPokemon and selectedEnemyPokemon are objects with a method to update nature
@@ -70,8 +71,11 @@ const SelectedMatchup = () => {
             if (fullEnemyRoster.teams.length > 0 && fullEnemyRoster.teams[0].pokemons.length > 0) {
                 setSelectedEnemyPokemon(fullEnemyRoster.teams[0].pokemons[0]);
             }
+            setIsLoading(false);
+            console.log("finished loading", fullUserRoster, fullEnemyRoster)
         } catch (error) {
             console.error('Error loading rosters:', error);
+            setIsLoading(false);
         }
     };
 
@@ -215,6 +219,9 @@ const SelectedMatchup = () => {
         }
     ];
 
+    if (isLoading) {
+        return <div>Loading...</div>; // Show a loading message or spinner
+    }
 
     return (
         <div>
@@ -272,7 +279,7 @@ const SelectedMatchup = () => {
                                     <div style={{marginLeft: '10px'}}>
                                         <h4>Select Ability</h4>
                                         <AbilitySelect user={true}
-                                                       defaultAbility={selectedUserPokemon.specie.abilities[0]||new Ability("default", "Something went wrong loading")}
+                                                       defaultAbility={selectedUserPokemon.specie.abilities?.[0]||new Ability("default", "Something went wrong loading")}
                                                        abilities={selectedUserPokemon.specie.abilities}
                                                        onChange={handleNatureChange}/>
                                     </div>

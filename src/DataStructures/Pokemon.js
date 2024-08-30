@@ -1,4 +1,5 @@
 import {Specie} from "./Specie";
+import {globalSpeciesList} from "../Composables/useSpecies";
 
 export class Pokemon{
     constructor(specie=null, nature='Serious', moves=[], evs=[0,0,0,0,0,0], ivs=[31,31,31,31,31,31], ability=null, item=null, level=100){
@@ -12,8 +13,9 @@ export class Pokemon{
         this.stats=[]
         this.level=level
         this.natureNums=[1,1,1,1,1,1]
+        console.log("constructor1", this.specie)
         if(this.specie instanceof Specie && this.specie.baseStats){
-            //console.log(specie)
+            console.log("specie constructor", specie)
             for (let i = 0; i < 6; i++) {
                 this.recalculateStat(i);
             }
@@ -25,7 +27,6 @@ export class Pokemon{
             if(!ability&&specie.abilities.length>0){
                 this.ability=specie.abilities[0];
             }
-
         }
     }
 
@@ -146,7 +147,14 @@ export class Pokemon{
     }
 
     static fromJSON(json) {
-        return new Pokemon(json.specie, json.nature, json.moves, json.evs, json.ivs, json.ability, json.item, json.level);
+        if(json.specie)
+        {
+            return new Pokemon(json.specie, json.nature, json.moves, json.evs, json.ivs, json.ability, json.item, json.level);
+        }
+        else{
+            return new Pokemon(globalSpeciesList.json)
+        }
+
     }
 
     static jsonFromPartialObject(object){
