@@ -11,6 +11,3 @@ export class Move {
     }
 }
 
-export function createMoveFromSnapshot(snapshot){
-
-}

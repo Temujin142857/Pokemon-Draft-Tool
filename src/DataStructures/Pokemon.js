@@ -13,15 +13,13 @@ export class Pokemon{
         this.stats=[]
         this.level=level
         this.natureNums=[1,1,1,1,1,1]
-        console.log("constructor1", this.specie)
         if(this.specie instanceof Specie && this.specie.baseStats){
-            console.log("specie constructor", specie)
             for (let i = 0; i < 6; i++) {
                 this.recalculateStat(i);
             }
-            if(moves.length===0 && specie.learnSet){
-                for (let i = 0; i < 4 && i < specie.learnSet.length; i++) {
-                    this.moves.push(specie.learnSet[i]);
+            if(moves.length===0 && specie.moves){
+                for (let i = 0; i < 4 && i < specie.moves.length; i++) {
+                    this.moves.push(specie.moves[i]);
                 }
             }
             if(!ability&&specie.abilities.length>0){

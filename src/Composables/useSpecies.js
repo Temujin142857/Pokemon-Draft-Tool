@@ -3,16 +3,30 @@ import {getCachedData, cacheData} from './useLocalStorage';
 import {loadSpecie, saveSpecie} from "./useDatabase";
 import {fetchGeneric, fetchSpecies} from "./usePokeAPI";
 import {Ability} from "../DataStructures/Ability";
+import {createMoveFromSnapshot, loadMoveFromName} from "./useMoves";
 
-export const createSpecie = (name, url, baseStats, moves, types, id, abilities) => {
-    return new Specie(name, url, baseStats, moves, types, id, abilities);
-};
-
-export const createSpecieFromJson = (json) => {
-    return new Specie(json.name, null, json.stats, json.moves, json.types, json.id, json.abilities, json.weight);
-}
 
 export let globalSpeciesList={};
+
+export const createSpecieFromJson = async (json) => {
+    let moves = json.moves;
+    if(!moves){
+        moves=[];
+        for (const move of json.learnSet) {
+            moves.push(await loadMoveFromName(move));
+        }
+    }
+    if (moves instanceof String) {
+        let moveNames = moves.split(",");
+        let movesArray = [];
+        for (const moveName of moveNames) {
+            movesArray.push(await loadMoveFromName(moveName));
+        }
+        moves = movesArray;
+    }
+    return new Specie(json.name, null, json.baseStats, json.learnSet, moves, json.types, json.number, json.abilities, json.weight);
+}
+
 
 const createSpecieFromAPI=async (json) => {
     if (!json) return null;
@@ -26,35 +40,47 @@ const createSpecieFromAPI=async (json) => {
         abilities.push(new Ability(ability.ability.name, abilityData.effect_entries[abilityData.effect_entries.length-1].effect));
     }
     let learnSet = [];
+    let moves=[];
     for (const move of json.moves) {
-        learnSet.push(move.move.name)
+        learnSet.push(move.move.name);
+        moves.push(await loadMoveFromName(move.move.name));
     }
     let types = [];
     for (const type of json.types) {
         types.push(type.type.name);
     }
-    return new Specie(json.name, null, stats, learnSet, types, json.id, abilities, json.weight);
+    return new Specie(json.name, null, stats, learnSet, moves, types, json.id, abilities, json.weight);
 }
 export const loadASpecie = async (specieName) => {
-    let specie= createSpecieFromJson(getCachedData(specieName));
-    if(!specie?.baseStats){
+    let specie= await createSpecieFromJson(await getCachedData(specieName));
+    if(!validateSpecie(specie)){
         specie=await createSpecieFromJson(await loadSpecie(specieName));
+        console.log("loaded species from database", specie);
     } else{
         console.log("loaded species from cache", specie);
     }
-    if(!specie?.baseStats){
+    if(!validateSpecie(specie)){
+        console.log("specie not in cache or database", specie, specieName)
         specie= await createSpecieFromAPI(await fetchSpecies(specieName));
-        console.log("loaded species from api");
+        console.log("loaded species from api", specie);
         if(specie?.name){
-            cacheData(specieName, specie);
-            saveSpecie(specie)
+            let specieNoMoves={...specie}
+            specieNoMoves.moves=null;
+            cacheData(specieName, specieNoMoves);
+            saveSpecie(specieNoMoves);
         }
 
     } else{
-        cacheData(specieName, specie);
+        let specieNoMoves={...specie}
+        specieNoMoves.moves=null;
+        cacheData(specieName, specieNoMoves);
     }
-    if(specie?.name){
+    if(validateSpecie(specie)){
         globalSpeciesList[specie.name]=specie;
     }
     return specie;
+}
+
+const validateSpecie=(specie)=>{
+    return (specie && specie.name && specie.baseStats && specie.abilities && specie.learnSet && specie.weight && specie.number);
 }

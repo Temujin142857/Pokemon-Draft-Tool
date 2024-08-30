@@ -1,9 +1,9 @@
 export function calculateDamage(attackingPokemon, move, defendingPokemon, burn=1, screens=1, targets=1, weather=1, critical=1, other=1, terrain=1){
-    console.log("att", attackingPokemon);
     let stab=attackingPokemon.specie?.types.some((type)=>{return type===move?.type;}) ? 1.5 : 1;
     let randmax=1
     let randmin=0.85;
     let typeWeakness=1;
+    //console.log(move)
     for (const type in defendingPokemon.specie?.types) {
         typeWeakness*=typeChartCheck(move.type.toLowerCase(), defendingPokemon.specie.types[type].toLowerCase());
     }

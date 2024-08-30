@@ -3,7 +3,6 @@ import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import { createPokemonFromSnapshot } from "../DataStructures/Pokemon.js"
 import {Specie} from "../DataStructures/Specie.js";
-import { createMoveFromSnapshot } from "../DataStructures/Move.js"
 import { createTeamsFromSnapshot } from "../DataStructures/Team.js"
 import {addRoster, setUser, user as gUser} from "./useUser(lol)";
 import {User} from "../DataStructures/User";
@@ -54,14 +53,15 @@ function readData(path){
 
 }
 
-export function loadAPokemon(pokemonId, user="default"){
-    const data=readData(user+"/Pokemon/"+pokemonId);
+export async function loadAPokemon(pokemonId, user = "default") {
+    const data = await readData(user + "/Pokemon/" + pokemonId);
     return createPokemonFromSnapshot(data);
 }
 
-export function loadSpecie(speciesName){
-    const data=readData("species/"+speciesName);
-    return createSpecieFromJson(data);
+export async function loadSpecie(speciesName) {
+    const data = await readData("species/" + speciesName);
+    console.log("attempted loaded specie", data)
+    return data;
 }
 
 export async function loadAllSpecies() {
@@ -75,13 +75,13 @@ export async function loadAllSpecies() {
     }
 }
 
-export function loadMove(moveName){
-    const data=readData("moves/"+moveName);
-    return createMoveFromSnapshot(data);
+export async function loadMove(moveName){
+    const data=await readData("moves/"+moveName);
+    return data;
 }
 
-export function loadTeams(){
-    const data=readData("teams");
+export async function loadTeams(){
+    const data=await readData("teams");
     return createTeamsFromSnapshot(data);
 }
 
@@ -91,6 +91,7 @@ export function saveAPokemon(pokemon){
 
 export async function saveSpecie(specie){
     console.log("saving specie: ", specie);
+    specie.moves=null;
     await set(ref(useDatabase, 'species/' + specie.name), specie);
 }
 
@@ -157,6 +158,6 @@ export async function loadUserRosters(user){
 
 }
 
-const createSpecieFromJson = (json) => {
-    return new Specie(json.name, json.baseStats, json.moves, json.types, json.id, json.abilities);
+export const saveMove = async (move) =>{
+    await set(ref(useDatabase, 'moves/' + move.name), move);
 }
