@@ -10,6 +10,7 @@ import "../CSS/SelectedMove.css"
 import {Slide, toast, ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "../Components/Header";
+import {saveARoster} from "../Composables/useRosters";
 
 const SelectedMove = (props) => {
     const location = useLocation();
@@ -150,6 +151,8 @@ const SelectedMove = (props) => {
     const handleSave = () =>{
         console.log(userRoster)
         const data={userRoster: userRoster.toJSON(), enemyRoster: enemyRoster.toJSON()}
+        saveARoster(userRoster);
+        saveARoster(enemyRoster);
         setData(data);
         setPath('/selectedMatchup')
         setNavigate(true)
