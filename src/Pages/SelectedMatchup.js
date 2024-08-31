@@ -230,16 +230,16 @@ const SelectedMatchup = () => {
                 <div style={{
                     backgroundColor: '#302B2B',
                     textAlign: 'center',
-                    minHeight: '100vh',
-                    minWidth: '100vw', paddingTop: '10px', paddingBottom: '20px'}}>
-                    <div style={{textAlign: 'center', display: 'flex'}}>
+                    minHeight: '120vh',
+                    minWidth: '100vw', paddingTop: '10px'}}>
+                    <div style={{textAlign: 'center'}}>
                         <div>
                             {userRoster &&  (
-                                <h2 className={'text'} style={{marginLeft: '40px'}}>
+                                <h2 className={'text'} style={{}}>
                                     {userRoster.name}
                                 </h2>
                             )}
-                            <ul>
+                            <ul style={{display: 'flex', justifyContent: "center"}}>
                                 {userRoster && userRoster.species?.map((specie, index) =>
                                     <li key={index} className={'liii nameList'}  onClick={() => {
                                         selectSpecie(true, specie)
@@ -249,14 +249,12 @@ const SelectedMatchup = () => {
                         </div>
 
                         <div className={'container'}>
-                            <div className={'vertical-line'}></div>
+                            <div className={'horizontal-line'}></div>
                         </div>
 
 
-                        <div style={{textAlign: 'center'}}>
-                            {userRoster && userRoster.teams.length > 0 && (
-                            <h2 className={'text'} style={{marginLeft: '40px'}}>{userRoster.teams[0].name}</h2>)}
-                            <ul>
+                        <div style={{textAlign: 'center', marginTop: '0'}}>
+                            <ul style={{display: 'flex', justifyContent: "center"}}>
                                 {userRoster && userRoster.teams[0].pokemons.map((pokemon, index) =>
                                     <li key={index}
                                         className={selectedUserPokemon.specie.name === pokemon.specie.name ? 'liii nameList selectedPokemon' : 'liii nameList'}
@@ -269,12 +267,9 @@ const SelectedMatchup = () => {
                             </ul>
                         </div>
 
-                        <div>
-                            <Card style={{
-                                width: '100%',
-                                padding: '20px'
-                            }}>
-                                <h1>{selectedUserPokemon.specie.name}</h1>
+                        <div style={{display: 'flex', justifyContent: "center", margin: 0}}>
+                            <Card style={{width: '100%', marginBottom: '0', paddingBottom: '0'  }}>
+                                <h1 style={{marginBottom: '0', marginTop: '15px', padding: '0'}}>{selectedUserPokemon.specie.name}</h1>
                                 <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
                                     <div style={{marginLeft: '10px'}}>
                                         <h4>Select Ability</h4>
@@ -296,7 +291,7 @@ const SelectedMatchup = () => {
                                     </div>
                                 </div>
 
-                                <div style={{display: 'flex'}}>
+                                <div style={{marginBottom: '0', paddingBottom: '0', display: 'flex'}}>
                                     <div>
                                         <h2>_</h2>
                                         <ul style={{listStyleType: 'none', padding: 0}}>
@@ -487,8 +482,7 @@ const SelectedMatchup = () => {
                         </div>
 
                         <div>
-                            <h2 className={'text'} style={{marginLeft: '40px'}}>{enemyRoster.teams[0].name}</h2>
-                            <ul>
+                            <ul style={{display: 'flex', justifyContent: "center"}}>
                                 {enemyRoster && enemyRoster.teams[0].pokemons.map((pokemon, index) =>
                                     <li key={index}
                                         className={selectedEnemyPokemon.specie.name === pokemon.specie.name ? 'liii nameList selectedPokemon' : 'nameList liii'}
@@ -501,11 +495,11 @@ const SelectedMatchup = () => {
                             </ul>
                         </div>
                         <div className={'container'}>
-                            <div className={'vertical-line'}></div>
+                            <div className={'horizontal-line'}></div>
                         </div>
                         <div>
-                            <h2 className={'text'} style={{marginLeft: '40px'}}>{enemyRoster.name}</h2>
-                            <ul>
+                            <h2 className={'text'} style={{}}>{enemyRoster.name}</h2>
+                            <ul style={{display: 'flex', justifyContent: "center"}}>
                                 {enemyRoster && enemyRoster.species?.map((specie, index) =>
                                     <li key={index} className={'liii nameList'} onClick={() => {
                                         selectSpecie(false, specie)

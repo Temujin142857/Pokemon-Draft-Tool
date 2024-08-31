@@ -1,7 +1,6 @@
 .container {
     display: flex;
     align-items: center;
-    margin-left: 30px;
 }
 .vertical-line {
     width: 3px; /* Line width */
@@ -11,8 +10,6 @@
 
 .liii{
     text-align: center;
-    margin-bottom: 10px;
-    margin-top: 10px;
     color: lightgray;
     list-style-type: none;
     cursor: pointer;
@@ -25,6 +22,7 @@
 .nameList{
     min-width: 100px;
     font-size: large;
+    padding-left: 10px;
 }
 
 
@@ -39,7 +37,7 @@
     gap: 10px; /* Adjust as needed */
     width: 300px; /* Adjust width as needed */
     height: 300px; /* Adjust height as needed */
-    margin-top: 50px;
+    margin-top: 30px;
     margin-left: 30px;
 }
 
