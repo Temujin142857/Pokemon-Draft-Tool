@@ -170,45 +170,46 @@ const SelectedMatchup = () => {
 
 
     function getColorForType(type) {
-        switch (type) {
-            case 'Normal':
+        console.log(type)
+        switch (type.toLowerCase()) {
+            case 'normal':
                 return 'gray';
-            case 'Fire':
+            case 'fire':
                 return 'orange';
-            case 'Water':
+            case 'water':
                 return 'blue';
-            case 'Electric':
+            case 'electric':
                 return 'yellow';
-            case 'Grass':
+            case 'grass':
                 return 'green';
-            case 'Ice':
+            case 'ice':
                 return 'lightblue';
-            case 'Fighting':
+            case 'fighting':
                 return 'red';
-            case 'Poison':
+            case 'poison':
                 return 'purple';
-            case 'Ground':
+            case 'ground':
                 return 'brown';
-            case 'Flying':
+            case 'flying':
                 return 'skyblue';
-            case 'Psychic':
+            case 'psychic':
                 return 'pink';
-            case 'Bug':
+            case 'bug':
                 return 'lime';
-            case 'Rock':
+            case 'rock':
                 return 'sienna';
-            case 'Ghost':
+            case 'ghost':
                 return 'violet';
-            case 'Dragon':
+            case 'dragon':
                 return 'indigo';
-            case 'Dark':
+            case 'dark':
                 return 'darkslategray';
-            case 'Steel':
+            case 'steel':
                 return 'lightsteelblue';
-            case 'Fairy':
+            case 'fairy':
                 return 'orchid';
             default:
-                return 'black'; // fallback color
+                return 'black';
         }
     }
 
@@ -231,17 +232,12 @@ const SelectedMatchup = () => {
                     backgroundColor: '#302B2B',
                     textAlign: 'center',
                     minHeight: '120vh',
-                    minWidth: '100vw', paddingTop: '10px'}}>
-                    <div style={{textAlign: 'center'}}>
-                        <div>
-                            {userRoster &&  (
-                                <h2 className={'text'} style={{}}>
-                                    {userRoster.name}
-                                </h2>
-                            )}
-                            <ul style={{display: 'flex', justifyContent: "center"}}>
+                    minWidth: '100vw'}}>
+                    <div style={{textAlign: 'center', margin: '0'}}>
+                        <div style={{ backgroundColor: '#b9cff5', margin: '0', paddingBottom: '5px', paddingTop: '10px' }}>
+                            <ul style={{display: 'flex', justifyContent: "center", margin: '0'}}>
                                 {userRoster && userRoster.species?.map((specie, index) =>
-                                    <li key={index} className={'liii nameList'}  onClick={() => {
+                                    <li key={index} className={'liii nameList'} style={{color: 'black'}} onClick={() => {
                                         selectSpecie(true, specie)
                                     }}>{specie.name}</li>
                                 )}
@@ -268,7 +264,7 @@ const SelectedMatchup = () => {
                         </div>
 
                         <div style={{display: 'flex', justifyContent: "center", margin: 0}}>
-                            <Card style={{width: '100%', marginBottom: '0', paddingBottom: '0'  }}>
+                            <Card style={{backgroundColor: '#b9cff5'  }}>
                                 <h1 style={{marginBottom: '0', marginTop: '15px', padding: '0'}}>{selectedUserPokemon.specie.name}</h1>
                                 <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
                                     <div style={{marginLeft: '10px'}}>
@@ -366,8 +362,8 @@ const SelectedMatchup = () => {
                                 </div>
                             </Card>
 
-                            <Card style={{display: 'flex', width: '100%', padding: '20px'}}>
-                                <h1>{selectedEnemyPokemon.specie.name}</h1>
+                            <Card style={{backgroundColor: '#f5b9b9'}}>
+                                <h1 style={{marginBottom: '0', marginTop: '15px', padding: '0'}}>{selectedEnemyPokemon.specie.name}</h1>
                                 <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
                                     <div style={{marginLeft: '10px'}}>
                                         <h4>Select Ability</h4>
@@ -497,11 +493,10 @@ const SelectedMatchup = () => {
                         <div className={'container'}>
                             <div className={'horizontal-line'}></div>
                         </div>
-                        <div>
-                            <h2 className={'text'} style={{}}>{enemyRoster.name}</h2>
-                            <ul style={{display: 'flex', justifyContent: "center"}}>
+                        <div style={{backgroundColor: '#f5b9b9', paddingTop: '10px', paddingBottom: '5px'}}>
+                            <ul style={{display: 'flex', justifyContent: "center", margin: '0'}}>
                                 {enemyRoster && enemyRoster.species?.map((specie, index) =>
-                                    <li key={index} className={'liii nameList'} onClick={() => {
+                                    <li key={index} className={'liii nameList'} style={{color: 'black'}} onClick={() => {
                                         selectSpecie(false, specie)
                                     }}>{specie.name}</li>
                                 )}

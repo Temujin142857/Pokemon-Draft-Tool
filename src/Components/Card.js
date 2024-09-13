@@ -2,9 +2,9 @@
 import React from 'react';
 import '../CSS/Card.css'; // Import the CSS file
 
-const Card = ({ children }) => {
+const Card = ({ children, style }) => {
     return (
-        <div className="card">
+        <div className="card" style={style}>
             {children}
         </div>
     );

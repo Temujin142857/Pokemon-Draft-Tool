@@ -146,10 +146,11 @@ export async function loadUserRosters(user){
     try {
         let rosters=[];
         const data = await readData("users/"+user.name);
-        console.log("data:", data, user);
         setUser(new User(user.name, data));
-        for (const rosterID in data.split(',')) {
-            rosters.push(await loadRoster(rosterID));
+        for (const rosterID of data.split(',')) {
+            let roster=await loadRoster(rosterID);
+            rosters.push(roster);
+            addRoster(roster)
         }
         return rosters;
     }catch (error) {

@@ -8,6 +8,15 @@
     background-color: black; /* Line color */
 }
 
+.horizontal-line {
+    width: 100%; /* Line width */
+    height: 3px; /* Line height */
+    background-color: black; /* Line color */
+    top: 50%; /* Center it vertically */
+    margin: 0;
+    padding: 0;
+}
+
 .liii{
     text-align: center;
     color: lightgray;
@@ -15,8 +24,10 @@
     cursor: pointer;
 }
 
-.selectedPokemon{
+.selectedPokemon {
     color: white;
+    border: 2px solid #FF0000;
+    border-radius: 5px;
 }
 
 .nameList{

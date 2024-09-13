@@ -7,7 +7,8 @@
     padding-top: 0;
     margin-left: 20px; /* Margin outside the card */
     min-width: 40vw; /* Allow the card to take full width */
-    min-height: 0/* Ensure minimum height to expand */
+    min-height: 0;
+    padding-bottom: 0;
 }
 
 .text {
